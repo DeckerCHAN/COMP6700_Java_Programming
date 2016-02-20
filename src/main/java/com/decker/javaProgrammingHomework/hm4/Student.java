@@ -1,18 +1,18 @@
 /*******************************************************************************
  * The MIT License (MIT)
- * <p>
+ * <p/>
  * Copyright (c) 2016 DeckerCHAN
- * <p>
+ * <p/>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * <p>
+ * <p/>
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * <p>
+ * <p/>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,17 +25,26 @@
 package com.decker.javaProgrammingHomework.hm4;
 
 
+import java.time.Year;
+
 public class Student {
+
     private static final String DEFAULT_NAME = "Unknown Name";
     private static final String DEFAULT_ADDRESS = "Unknown Address";
     private static final String DEFAULT_DEGREE_NAME = "Unknown Degree Name";
     private static final String DEFAULT_DEPARTMENT = "Unknown Department";
-    private static final String DEFAULT_COMMENCED_YEAR = "Unknown Year";
+    private static final Integer DEFAULT_COMMENCED_YEAR = Integer.valueOf(Year.now().toString());
+
+    private static final Long STUDENT_ID_BASE = 1000L;
+
+    private static Long NEXT_ID = -1L;
+
+    private Long studentId;
     private String name;
     private String address;
     private String degreeName;
     private String department;
-    private String commencedYear;
+    private Integer commencedYear;
 
     public Student(String name, String address, String department) {
         this(name, address);
@@ -52,12 +61,34 @@ public class Student {
         this.name = name;
     }
 
+
     public Student() {
-        this.name = Student.DEFAULT_NAME;
-        this.address = Student.DEFAULT_ADDRESS;
-        this.department = Student.DEFAULT_DEPARTMENT;
-        this.degreeName = Student.DEFAULT_DEGREE_NAME;
-        this.commencedYear = Student.DEFAULT_COMMENCED_YEAR;
+        this.name = DEFAULT_NAME;
+        this.address = DEFAULT_ADDRESS;
+        this.department = DEFAULT_DEPARTMENT;
+        this.degreeName = DEFAULT_DEGREE_NAME;
+        this.commencedYear = DEFAULT_COMMENCED_YEAR;
+        this.studentId = this.generateId(getNextId());
+    }
+
+    private static Long getNextId() {
+        if (NEXT_ID == -1L) {
+            NEXT_ID = STUDENT_ID_BASE;
+        }
+        return NEXT_ID++;
+    }
+
+    private Long generateId(Long baseId) {
+        Integer decadedYears = this.commencedYear % 100;
+        return baseId + decadedYears * 10000;
+    }
+
+    public Long getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
     }
 
     public String getName() {
@@ -92,16 +123,16 @@ public class Student {
         this.department = department;
     }
 
-    public String getCommencedYear() {
+    public Integer getCommencedYear() {
         return commencedYear;
     }
 
-    public void setCommencedYear(String commencedYear) {
+    public void setCommencedYear(Integer commencedYear) {
         this.commencedYear = commencedYear;
     }
 
     @Override
     public String toString() {
-        return String.format("Student Information: \n  Name:%s \n  Department:%s \n  Year Commenced:%s", this.getName(), this.getDepartment(), this.getCommencedYear());
+        return String.format("Student Information: \n ID:%s \n  Name:%s \n  Department:%s \n  Year Commenced:%s", this.getStudentId(), this.getName(), this.getDepartment(), this.getCommencedYear());
     }
 }

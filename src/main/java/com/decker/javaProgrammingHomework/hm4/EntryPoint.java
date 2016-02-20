@@ -1,4 +1,4 @@
-/*******************************************************************************
+/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2016 DeckerCHAN
@@ -20,25 +20,13 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
- ******************************************************************************/
+ */
 
 package com.decker.javaProgrammingHomework.hm4;
 
-import java.util.ArrayList;
-
-public class StudentTest {
-    public static void executeTest()
+public class EntryPoint {
+    public static void  main(String [] args)
     {
-        ArrayList<Student> Students =new ArrayList<Student>();
-        Students.add(0,new Student("Decker", "Canberra", "CSIT"));
-        Students.add(1,new Student("Simon", "California", "CSIT"));
-        Students.add(2,new Student("Mars", "Vladivostok", "CBE"));
-
-        for (Student s:Students) {
-            System.out.println(s);
-            System.out.println();
-        }
-
+        StudentTest.executeTest();
     }
 }
