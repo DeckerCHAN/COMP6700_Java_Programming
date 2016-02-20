@@ -1,6 +1,4 @@
-import com.decker.javaProgrammingHomework.hm4.StudentTest;
-
-/*******************************************************************************
+/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2016 DeckerCHAN
@@ -22,12 +20,13 @@ import com.decker.javaProgrammingHomework.hm4.StudentTest;
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
- ******************************************************************************/
+ */
+
+package com.decker.javaProgrammingLab.lab5;
 
 public class EntryPoint {
-    public static void  main(String [] args)
+    public static void main(String [] args)
     {
-        StudentTest.executeTest();
+
     }
 }
