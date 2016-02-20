@@ -36,7 +36,7 @@ public class StudentTest {
         Students.add(2,new Student("Mars", "Vladivostok", "CBE"));
 
         for (Student s:Students) {
-            System.out.println(s.toString());
+            System.out.println(s);
             System.out.println();
         }
 
