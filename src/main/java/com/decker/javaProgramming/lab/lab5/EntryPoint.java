@@ -1,7 +1,7 @@
-/*******************************************************************************
+/*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016 DeckerCHAN
+ * Copyright (c) 2016 Derek.CHAN
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,24 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- ******************************************************************************/
+ */
 
-package com.decker.javaProgrammingHomework.hm4;
+package com.decker.javaProgramming.lab.lab5;
 
-import java.util.ArrayList;
+import com.decker.javaProgramming.lab.lab5.probA.PercentageCalculator;
 
-public class StudentTest {
-    public static void executeTest()
+public class EntryPoint {
+    public static void main(String [] args)
     {
-        ArrayList<Student> Students =new ArrayList<Student>();
-        Students.add(0,new Student("Decker", "Canberra", "CSIT"));
-        Students.add(1,new Student("Simon", "California", "CSIT"));
-        Students.add(2,new Student("Mars", "Vladivostok", "CBE"));
-
-        for (Student s:Students) {
-            System.out.println(s);
-            System.out.println();
-        }
-
+        PercentageCalculator calculator =new PercentageCalculator();
+        calculator.receiveUserInput();
+        calculator.calculate();
     }
 }
