@@ -24,7 +24,9 @@
 
 package com.decker.javaProgrammingLab.lab5.probA;
 
-
-public class PercentageCalculate {
+public enum InputType {
+    Normal,
+    Error,
+    Determined
 
 }

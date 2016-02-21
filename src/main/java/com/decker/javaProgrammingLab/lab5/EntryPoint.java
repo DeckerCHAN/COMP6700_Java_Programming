@@ -24,9 +24,13 @@
 
 package com.decker.javaProgrammingLab.lab5;
 
+import com.decker.javaProgrammingLab.lab5.probA.PercentageCalculator;
+
 public class EntryPoint {
     public static void main(String [] args)
     {
-
+        PercentageCalculator calculator =new PercentageCalculator();
+        calculator.receiveUserInput();
+        calculator.calculate();
     }
 }
