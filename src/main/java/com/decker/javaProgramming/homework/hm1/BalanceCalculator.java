@@ -23,16 +23,29 @@
  *
  */
 
-package com.decker.javaProgramming.homework.hm6;
+package com.decker.javaProgramming.homework.hm1;
 
+public class BalanceCalculator {
+    public static void main(String[] args) {
+        Double source;
+        Double target;
+        try {
+            source = Double.valueOf(args[0]);
+            target = Double.valueOf(args[1]);
+        } catch (Exception ex) {
+            System.out.println("Correct format should be: amount(source) amount(target)");
+            return;
+        }
 
-import javafx.application.Application;
-import sun.applet.Main;
-
-public class EntryPoint {
-    public static void  main(String [] args)
-    {
-        Application.launch(ColouredShapes.class);
-
+        Double current = source;
+        Integer years = 0;
+        while (true) {
+            if (current >= target) {
+                System.out.printf("You need %d year(s) to accumulate amount from %.2f to %.2f %n", years, source, target);
+                return;
+            }
+            current *= 1.05;
+            years++;
+        }
     }
 }

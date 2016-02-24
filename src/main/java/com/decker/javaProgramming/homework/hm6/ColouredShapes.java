@@ -25,14 +25,62 @@
 
 package com.decker.javaProgramming.homework.hm6;
 
-
 import javafx.application.Application;
-import sun.applet.Main;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.ArcType;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
-public class EntryPoint {
-    public static void  main(String [] args)
-    {
-        Application.launch(ColouredShapes.class);
+public class ColouredShapes extends Application {
 
+
+    private Canvas canvas;
+    private Group root;
+
+    public ColouredShapes() {
+
+
+    }
+
+    public Group getRoot() {
+        return root;
+    }
+
+    public void setRoot(Group root) {
+        this.root = root;
+    }
+
+
+
+    public Canvas getCanvas() {
+        return canvas;
+    }
+
+    public void setCanvas(Canvas canvas) {
+        this.canvas = canvas;
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
+        primaryStage.setTitle("Coloured Shapes!");
+        primaryStage.setWidth(1366);
+        primaryStage.setHeight(768);
+
+        this.root=new Group();
+
+        Rectangle rect =new Rectangle(50,50, Paint.valueOf("BLUE"));
+      //  rect.
+
+        this.root.getChildren();
+
+        this.root.getChildren().add(this.canvas);
+        primaryStage.setScene(new Scene(this.root));
+        primaryStage.show();
     }
 }
