@@ -23,7 +23,7 @@
  *
  */
 
-package com.decker.javaProgramming.lab.lab2.exercise1;
+package com.decker.javaProgramming.lab.lab2;
 
 import com.decker.javaProgramming.utils.InputType;
 import org.apache.commons.lang.StringUtils;
