@@ -29,31 +29,28 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.scene.input.MouseEvent;
 
 public class ColouredShapes extends Application {
 
+    public static void  main(String [] args)
+    {
+        Application.launch(ColouredShapes.class);
+
+    }
 
     private Canvas canvas;
-    private Group root;
 
     public ColouredShapes() {
 
 
     }
 
-    public Group getRoot() {
-        return root;
-    }
-
-    public void setRoot(Group root) {
-        this.root = root;
-    }
 
 
 
@@ -72,15 +69,15 @@ public class ColouredShapes extends Application {
         primaryStage.setWidth(1366);
         primaryStage.setHeight(768);
 
-        this.root=new Group();
+        BorderPane root = new BorderPane();
 
-        Rectangle rect =new Rectangle(50,50, Paint.valueOf("BLUE"));
-      //  rect.
+        Rectangle rect =new Rectangle(580,30,50,50);
+        rect.setFill(Paint.valueOf("BLUE"));
 
-        this.root.getChildren();
+        root.setTop(rect);
 
-        this.root.getChildren().add(this.canvas);
-        primaryStage.setScene(new Scene(this.root));
+
+        primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
 }
