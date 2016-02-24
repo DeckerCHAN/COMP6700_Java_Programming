@@ -20,25 +20,60 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
  */
 
-package com.decker.javaProgramming.homework.hm4;
+package com.decker.javaProgramming.homework.hw6;
 
-import java.util.ArrayList;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
-public class StudentTest {
-    public static void executeTest()
+public class ColouredShapes extends Application {
+
+    public static void  main(String [] args)
     {
-        ArrayList<Student> Students =new ArrayList<Student>();
-        Students.add(0,new Student("Decker", "Canberra", "CSIT"));
-        Students.add(1,new Student("Simon", "California", "CSIT"));
-        Students.add(2,new Student("Mars", "Vladivostok", "CBE"));
+        Application.launch(ColouredShapes.class);
 
-        for (Student s:Students) {
-            System.out.println(s);
-            System.out.println();
-        }
+    }
 
+    private Canvas canvas;
+
+    public ColouredShapes() {
+
+
+    }
+
+
+
+
+    public Canvas getCanvas() {
+        return canvas;
+    }
+
+    public void setCanvas(Canvas canvas) {
+        this.canvas = canvas;
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
+        primaryStage.setTitle("Coloured Shapes!");
+        primaryStage.setWidth(1366);
+        primaryStage.setHeight(768);
+
+        BorderPane root = new BorderPane();
+
+        Rectangle rect =new Rectangle(580,30,50,50);
+        rect.setFill(Paint.valueOf("BLUE"));
+
+        root.setTop(rect);
+
+
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
     }
 }
