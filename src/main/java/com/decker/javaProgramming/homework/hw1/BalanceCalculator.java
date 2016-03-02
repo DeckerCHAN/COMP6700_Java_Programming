@@ -20,6 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package com.decker.javaProgramming.homework.hw1;
@@ -38,6 +39,9 @@ public class BalanceCalculator {
 
         Double current = source;
         Integer years = 0;
+        System.out.printf("+----+--------------------+%n");
+        System.out.printf("|year|      balance       +%n");
+        System.out.printf("+----+--------------------+%n");
         while (true) {
             if (current >= target) {
                 System.out.printf("You need %d year(s) to accumulate amount from %.2f to %.2f %n", years, source, target);
@@ -45,6 +49,8 @@ public class BalanceCalculator {
             }
             current *= 1.05;
             years++;
+            System.out.printf("|%4d|%20.2f|%n", years, current);
+            System.out.printf("+----+--------------------+%n");
         }
     }
 }
