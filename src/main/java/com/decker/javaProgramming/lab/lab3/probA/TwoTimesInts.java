@@ -25,17 +25,17 @@
 
 package com.decker.javaProgramming.lab.lab3.probA;
 
-public class HalveInts {
+public class TwoTimesInts {
     public static void main(String[] args) {
         MutableInt iWrapper;
         for (int k = 1; k <= 20; k++) {
             iWrapper = MutableInt.valueOf(k);
-            halfValue(iWrapper);
-            System.out.println(" k = " + k + " k/2 = " + iWrapper);
+            twoTimesValue(iWrapper);
+            System.out.println(" k = " + k + " k*2 = " + iWrapper);
         }
     }
 
-    public static void halfValue(MutableInt i) {
-        i.setValue(i.getValue() / 2);
+    public static void twoTimesValue(MutableInt i) {
+        i.setValue(i.getValue() * 2);
     }
 }
