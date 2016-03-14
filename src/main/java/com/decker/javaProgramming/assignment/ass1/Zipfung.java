@@ -23,11 +23,12 @@
  *
  */
 
-package com.decker.javaProgramming.lab.lab5.probA;
+package com.decker.javaProgramming.assignment.ass1;
 
-public enum InputType {
-    Normal,
-    Error,
-    Determined
+public class Zipfung {
+    public static void main(String[] args) {
+        Cli cli =new Cli(args);
+
+    }
 
 }

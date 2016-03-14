@@ -26,6 +26,7 @@
 package com.decker.javaProgramming.lab.lab5.probA;
 
 
+import com.decker.javaProgramming.utils.InputType;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.mutable.MutableInt;
 
@@ -34,6 +35,13 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 
 public class PercentageCalculator {
+
+    public static void main(String [] args)
+    {
+        PercentageCalculator calculator =new PercentageCalculator();
+        calculator.receiveUserInput();
+        calculator.calculate();
+    }
 
     private LinkedList<Integer> inputList;
 
