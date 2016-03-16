@@ -20,7 +20,6 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
  */
 
 package com.decker.javaProgramming.homework.hw3;
@@ -36,14 +35,19 @@ public class Factors {
         }
 
         System.out.printf("%d = 1 ", orig);
+        Boolean isPrimeNumber = true;
         for (Integer factor = 2; factor < orig / factor; factor++) {
             while (orig % factor == 0) {
+                isPrimeNumber = false;
                 System.out.printf("* %d ", factor);
                 orig = orig / factor;
             }
         }
         if (orig > 1) {
             System.out.printf("* %d", orig);
+        }
+        if (isPrimeNumber) {
+            System.out.printf("%n(%d is a prime number)", orig);
         }
     }
 }
