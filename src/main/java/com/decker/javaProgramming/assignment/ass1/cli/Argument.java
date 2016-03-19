@@ -23,14 +23,27 @@
  *
  */
 
-package com.decker.javaProgramming.assignment.ass1;
+package com.decker.javaProgramming.assignment.ass1.cli;
 
-import com.decker.javaProgramming.assignment.ass1.cli.Cli;
+import java.util.ArrayList;
 
-public class Zipfung {
-    public static void main(String[] args) {
-        Cli cli =new Cli(args);
-
+public class Argument {
+    private String argumentKey;
+    private ArrayList<String> values;
+    public Argument(String key) {
+        this.argumentKey = key;
+        this.values = new ArrayList<String>();
     }
 
+    public String getArgumentKey() {
+        return argumentKey;
+    }
+
+    public String[] getValues() {
+        return values.toArray(new String[]);
+    }
+
+    private void setValues(ArrayList<String> values) {
+        this.values = values;
+    }
 }

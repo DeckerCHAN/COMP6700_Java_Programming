@@ -23,31 +23,51 @@
  *
  */
 
-package com.decker.javaProgramming.assignment.ass1;
+package com.decker.javaProgramming.assignment.ass1.cli;
 
-import org.apache.commons.cli.Options;
+
+import java.util.ArrayList;
 
 public class Cli {
-    private Options options;
+    Argument keyLessArgument;
+    ArrayList<Argument> arguments;
     private String[] args;
 
-    private String helpContent = "Help in using this program:\n" +
-            "-h displays this message\n" +
-            "-a [\\emph{number}] [-o] runs and reports the first \\emph{number}\n" +
-            "ranked words obtained by merging tables from all\n" +
-            "texts in all categories. The default \\emph{number} value is 50.\n" +
-            "Include the option -o to use string interning when building the table.\n" +
-            "-c \\emph{category} [\\emph{number}] [-o] runs and reports the first\n" +
-            "\\emph{number} ranked words obtained by merging the tables from all\n" +
-            "texts in \\emph{category}. The default \\emph{number} value is 50;\n" +
-            "include the option -o to use string interning when building the table.\n" +
-            "-l lists all available catagories for which at least one text is available\n" +
-            "for processing";
-
     public Cli(String[] args) {
-        this.options = new Options();
         this.args = args;
-
-        options.addOption("h", "help", false, helpContent);
+        this.keyLessArgument = new Argument("");
+        this.arguments = new ArrayList<Argument>();
+        this.resolveArguments();
     }
+
+    public Argument getKeyLessArgument() {
+        return keyLessArgument;
+    }
+
+    public Argument getArgument(String key) {
+        for (Argument arg :
+                this.arguments) {
+            if (arg.getArgumentKey().equals(key)) {
+                return arg;
+            }
+        }
+        return null;
+    }
+
+    private void resolveArguments() throws IllegalArgumentException {
+
+        for (String arg : this.args) {
+            if (arg.startsWith("-")) {
+                this.arguments.add(new Argument(arg.substring(1)));
+            } else {
+                if (this.arguments.size() == 0) {
+                    this.keyLessArgument.getValues().add(arg);
+                } else {
+                    arguments.get(arguments.size() - 1).getValues().add(arg);
+                }
+            }
+        }
+    }
+
+
 }
