@@ -22,27 +22,23 @@
  * SOFTWARE.
  */
 
-package com.decker.javaProgramming.assignment.ass1.cli;
+package com.decker.javaProgramming.assignment.ass1.utls;
 
-import java.util.ArrayList;
+public class FileUtils {
+    /**
+     * Returns extension of file by give file path
+     * @param filePath give file path
+     * @return the extension of file by give path, return null if file do not have any extension
+     */
+    public static String getFileExtensionName(String filePath) {
+        String extension = "";
 
-public class Argument {
-    private String argumentKey;
-    private ArrayList<String> values;
-    public Argument(String key) {
-        this.argumentKey = key;
-        this.values = new ArrayList<String>();
-    }
+        int i = filePath.lastIndexOf('.');
+        int p = Math.max(filePath.lastIndexOf('/'), filePath.lastIndexOf('\\'));
 
-    public String getArgumentKey() {
-        return argumentKey;
-    }
-
-    public ArrayList<String> getValues() {
-        return values;
-    }
-
-    private void setValues(ArrayList<String> values) {
-        this.values = values;
+        if (i > p) {
+            extension = filePath.substring(i + 1);
+        }
+        return extension;
     }
 }

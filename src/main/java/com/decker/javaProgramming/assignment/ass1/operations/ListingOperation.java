@@ -22,27 +22,11 @@
  * SOFTWARE.
  */
 
-package com.decker.javaProgramming.assignment.ass1.cli;
+package com.decker.javaProgramming.assignment.ass1.operations;
 
-import java.util.ArrayList;
+public class ListingOperation implements Operation {
 
-public class Argument {
-    private String argumentKey;
-    private ArrayList<String> values;
-    public Argument(String key) {
-        this.argumentKey = key;
-        this.values = new ArrayList<String>();
-    }
+    public void execute() {
 
-    public String getArgumentKey() {
-        return argumentKey;
-    }
-
-    public ArrayList<String> getValues() {
-        return values;
-    }
-
-    private void setValues(ArrayList<String> values) {
-        this.values = values;
     }
 }

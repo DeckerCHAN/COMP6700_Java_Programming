@@ -22,27 +22,28 @@
  * SOFTWARE.
  */
 
-package com.decker.javaProgramming.assignment.ass1.cli;
+package com.decker.javaProgramming.assignment.ass1.entities;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.util.List;
 
-public class Argument {
-    private String argumentKey;
-    private ArrayList<String> values;
-    public Argument(String key) {
-        this.argumentKey = key;
-        this.values = new ArrayList<String>();
+public class Category {
+    private String path;
+    private List<File> literatureFiles;
+
+    public String getPath() {
+        return path;
     }
 
-    public String getArgumentKey() {
-        return argumentKey;
+    public void setPath(String path) {
+        this.path = path;
     }
 
-    public ArrayList<String> getValues() {
-        return values;
+    public List<File> getLiteratureFiles() {
+        return literatureFiles;
     }
 
-    private void setValues(ArrayList<String> values) {
-        this.values = values;
+    public void setLiteratureFiles(List<File> literatureFiles) {
+        this.literatureFiles = literatureFiles;
     }
 }

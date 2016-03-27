@@ -20,7 +20,6 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
  */
 
 package com.decker.javaProgramming.assignment.ass1.cli;
@@ -52,6 +51,16 @@ public class Cli {
             }
         }
         return null;
+    }
+
+    public Boolean hasArgument(String key) {
+        for (Argument arg :
+                this.arguments) {
+            if (arg.getArgumentKey().equals(key)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void resolveArguments() throws IllegalArgumentException {
