@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.decker.javaProgramming.exam.mid;
+package com.decker.javaProgramming.exam.mid.sample;
 
 import java.util.LinkedList;
 import java.util.Random;
@@ -74,7 +74,6 @@ public class PasswordGenerator {
             passwordList.remove(index);
         }
 
-        System.out.printf("Your password is: %s", password);
-
+        System.out.printf("Your password is: %s", new String(password));
     }
 }
