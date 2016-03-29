@@ -25,7 +25,7 @@
 package com.decker.javaProgramming.homework.hw4;
 
 
-import java.time.Year;
+import java.util.Calendar;
 
 public class Student {
 
@@ -33,7 +33,7 @@ public class Student {
     private static final String DEFAULT_ADDRESS = "Unknown Address";
     private static final String DEFAULT_DEGREE_NAME = "Unknown Degree Name";
     private static final String DEFAULT_DEPARTMENT = "Unknown Department";
-    private static final Integer DEFAULT_COMMENCED_YEAR = Integer.valueOf(Year.now().toString());
+    private static final Integer DEFAULT_COMMENCED_YEAR = Calendar.getInstance().get(Calendar.YEAR);
 
     private static final Long STUDENT_ID_BASE = 1000L;
 
@@ -79,8 +79,8 @@ public class Student {
     }
 
     private Long generateId(Long baseId) {
-        Integer decadedYears = this.commencedYear % 100;
-        return baseId + decadedYears * 10000;
+        Integer decadeYears = this.commencedYear % 100;
+        return baseId + decadeYears * 10000;
     }
 
     public Long getStudentId() {

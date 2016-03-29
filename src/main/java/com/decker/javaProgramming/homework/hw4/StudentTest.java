@@ -20,7 +20,6 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
  */
 
 package com.decker.javaProgramming.homework.hw4;
@@ -32,7 +31,7 @@ public class StudentTest {
     {
         StudentTest.executeTest();
     }
-    public static void executeTest()
+    private static void executeTest()
     {
         ArrayList<Student> Students =new ArrayList<Student>();
         Students.add(0,new Student("Decker", "Canberra", "CSIT"));
