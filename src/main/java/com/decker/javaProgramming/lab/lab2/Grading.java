@@ -26,7 +26,7 @@
 package com.decker.javaProgramming.lab.lab2;
 
 import com.decker.javaProgramming.utils.InputType;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
