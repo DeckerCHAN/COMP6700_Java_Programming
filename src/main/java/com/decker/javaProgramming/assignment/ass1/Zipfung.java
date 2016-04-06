@@ -30,6 +30,8 @@ public class Zipfung {
     public static void main(String[] args) {
         Cli cli =new Cli(args);
 
+
+
         if(cli.hasArgument("-l"))
         {
 

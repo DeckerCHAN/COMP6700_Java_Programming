@@ -22,43 +22,22 @@
  * SOFTWARE.
  */
 
-package com.decker.javaProgramming.assignment.ass1.factories;
+package com.decker.javaProgramming.assignment.ass1;
 
 import com.decker.javaProgramming.assignment.ass1.entities.Category;
-import com.decker.javaProgramming.assignment.ass1.utls.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-public class CategoryFactory {
-
-
-    public Category createCategory(Path path) {
-
-        if (!path.toFile().exists()) {
-            return null;
-        }
-
-        Category category = new Category();
-        category.setPath(path);
-        ArrayList<Path> literFiles = new ArrayList<>();
-        try (DirectoryStream<Path> dirs
-                     = Files.newDirectoryStream(path, "*.txt")) {
-            for (Path entry : dirs) {
-                literFiles.add(entry);
-            }
-        } catch (IOException e) {
-            return null;
-        }
+public class CategoriesManager {
 
 
-        category.setLiteratureFiles(literFiles);
-        return category;
+
+    public CategoriesManager(Path runningFolder) {
     }
 
+    public Map<String, Category> getCategories() {
+
+    }
 }

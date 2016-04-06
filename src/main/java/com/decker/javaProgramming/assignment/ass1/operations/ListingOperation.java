@@ -26,6 +26,8 @@ package com.decker.javaProgramming.assignment.ass1.operations;
 
 public class ListingOperation implements Operation {
 
+
+
     public void execute() {
 
     }

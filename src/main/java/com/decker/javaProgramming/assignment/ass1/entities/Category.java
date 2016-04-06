@@ -25,25 +25,26 @@
 package com.decker.javaProgramming.assignment.ass1.entities;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
 
 public class Category {
-    private String path;
-    private List<File> literatureFiles;
+    private Path path;
+    private List<Path> literatureFiles;
 
-    public String getPath() {
+    public Path getPath() {
         return path;
     }
 
-    public void setPath(String path) {
+    public void setPath(Path path) {
         this.path = path;
     }
 
-    public List<File> getLiteratureFiles() {
+    public List<Path> getLiteratureFiles() {
         return literatureFiles;
     }
 
-    public void setLiteratureFiles(List<File> literatureFiles) {
+    public void setLiteratureFiles(List<Path> literatureFiles) {
         this.literatureFiles = literatureFiles;
     }
 }
