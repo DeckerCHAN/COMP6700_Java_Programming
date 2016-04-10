@@ -24,20 +24,72 @@
 
 package com.decker.javaProgramming.assignment.ass1;
 
-import com.decker.javaProgramming.assignment.ass1.entities.Category;
-
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Properties;
 
 public class CategoriesManager {
 
+    private  Path propertiesPath;
 
+    private HashMap<String, String> categories;
 
-    public CategoriesManager(Path runningFolder) {
+    public CategoriesManager(Path runningFolder) throws IOException {
+            this.propertiesPath = runningFolder.resolve("ass1.txt");
+        if(propertiesPath.toFile().exists())
+        {
+            this.loadCategoriesFromPropertiesFile();
+        }else {
+            this.searchFolderBuildCategories();
+            this.saveCategoriesFromPropertiesFile();
+        }
     }
 
-    public Map<String, Category> getCategories() {
+    public HashMap<String, String> getCategories() {
+        return categories;
+    }
+
+    private void setCategories(HashMap<String, String> categories) {
+        this.categories = categories;
+    }
+
+    private boolean loadCategoriesFromPropertiesFile() {
+        this.setCategories(new HashMap<>());
+        Properties prop = new Properties();
+        try {
+            prop.load(new FileReader(propertiesPath.toFile()));
+            for (final String name :
+                    prop.stringPropertyNames()) {
+                this.getCategories().put(name, prop.getProperty(name));
+            }
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    private boolean saveCategoriesFromPropertiesFile() {
+        Properties prop = new Properties();
+        for (String key :
+                this.getCategories().keySet()) {
+            prop.setProperty(key,this.getCategories().get(key));
+        }
+        try {
+            prop.store(new FileWriter(propertiesPath.toFile()), null);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+
+    private void searchFolderBuildCategories() {
 
     }
+
+
 }
