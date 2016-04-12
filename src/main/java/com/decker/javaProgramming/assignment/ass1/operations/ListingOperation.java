@@ -24,11 +24,33 @@
 
 package com.decker.javaProgramming.assignment.ass1.operations;
 
+import com.decker.javaProgramming.assignment.ass1.CategoriesManager;
+
+import static java.lang.System.out;
+
 public class ListingOperation implements Operation {
 
+    public ListingOperation(CategoriesManager categoriesManager) {
+        this.categoriesManager = categoriesManager;
+    }
 
+    private CategoriesManager categoriesManager;
 
     public void execute() {
+        if (categoriesManager.getCategories().keySet().size() > 0) {
 
+            out.println("these are available categories:");
+            categoriesManager.getCategories().keySet().forEach(out::println);
+        } else {
+            out.println("no category found.");
+        }
+    }
+
+    public CategoriesManager getCategoriesManager() {
+        return categoriesManager;
+    }
+
+    public void setCategoriesManager(CategoriesManager categoriesManager) {
+        this.categoriesManager = categoriesManager;
     }
 }

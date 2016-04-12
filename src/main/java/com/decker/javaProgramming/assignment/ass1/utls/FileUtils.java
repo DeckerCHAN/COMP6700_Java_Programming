@@ -24,21 +24,28 @@
 
 package com.decker.javaProgramming.assignment.ass1.utls;
 
+import java.nio.file.Path;
+
 public class FileUtils {
     /**
      * Returns extension of file by give file path
-     * @param filePath give file path
+     *
+     * @param fileName give file name or path
      * @return the extension of file by give path, return null if file do not have any extension
      */
-    public static String getFileExtensionName(String filePath) {
+    public static String getFileExtensionName(String fileName) {
         String extension = "";
 
-        int i = filePath.lastIndexOf('.');
-        int p = Math.max(filePath.lastIndexOf('/'), filePath.lastIndexOf('\\'));
+        int i = fileName.lastIndexOf('.');
+        int p = Math.max(fileName.lastIndexOf('/'), fileName.lastIndexOf('\\'));
 
         if (i > p) {
-            extension = filePath.substring(i + 1);
+            extension = fileName.substring(i + 1);
         }
         return extension;
+    }
+
+    public static String getFileExtensionName(Path path) {
+        return getFileExtensionName(path.toFile().getName());
     }
 }

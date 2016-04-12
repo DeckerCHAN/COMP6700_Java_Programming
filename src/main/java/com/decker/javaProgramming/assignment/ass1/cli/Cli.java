@@ -35,7 +35,7 @@ public class Cli {
     public Cli(String[] args) {
         this.args = args;
         this.keyLessArgument = new Argument("");
-        this.arguments = new ArrayList<Argument>();
+        this.arguments = new ArrayList<>();
         this.resolveArguments();
     }
 

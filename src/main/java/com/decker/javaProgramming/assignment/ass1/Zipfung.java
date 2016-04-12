@@ -24,18 +24,43 @@
 
 package com.decker.javaProgramming.assignment.ass1;
 
+import com.decker.javaProgramming.assignment.ass1.cli.Argument;
 import com.decker.javaProgramming.assignment.ass1.cli.Cli;
+import com.decker.javaProgramming.assignment.ass1.operations.ListingOperation;
+import com.decker.javaProgramming.assignment.ass1.operations.Operation;
+
+import java.nio.file.Paths;
+
+import static java.lang.System.getProperty;
+import static java.lang.System.out;
 
 public class Zipfung {
-    public static void main(String[] args) {
-        Cli cli =new Cli(args);
+    public static void main(String[] args) throws Exception {
 
+        long startTime = System.currentTimeMillis();
+        Cli cli = new Cli(args);
+        CategoriesManager categoriesManager = new CategoriesManager(Paths.get(getProperty("user.dir")));
 
+        if (cli.hasArgument("l")) {
+            Operation listOperation =new ListingOperation(categoriesManager);
+            listOperation.execute();
+        } else if (cli.hasArgument("c")) {
+            Argument arg = cli.getArgument("c");
+            if (cli.hasArgument("o")) {
 
-        if(cli.hasArgument("-l"))
-        {
+            } else {
+
+            }
+
+        } else if (cli.hasArgument("h")) {
+            //TODO: print help
+        } else {
 
         }
+
+        long endTime = System.currentTimeMillis();
+        long totalTime = endTime - startTime;
+        System.out.printf("Totally %d(ms) used.%n", totalTime);
 
     }
 

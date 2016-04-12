@@ -24,36 +24,49 @@
 
 package com.decker.javaProgramming.assignment.ass1;
 
+import com.decker.javaProgramming.assignment.ass1.entities.Category;
+import com.decker.javaProgramming.assignment.ass1.utls.FileUtils;
+
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Properties;
+
+import static java.lang.System.out;
 
 public class CategoriesManager {
 
-    private  Path propertiesPath;
+    private Path propertiesPath;
 
-    private HashMap<String, String> categories;
+    private HashMap<String, Category> categories;
+
+    private Path runningFolder;
 
     public CategoriesManager(Path runningFolder) throws IOException {
-            this.propertiesPath = runningFolder.resolve("ass1.txt");
-        if(propertiesPath.toFile().exists())
-        {
+        this.propertiesPath = runningFolder.resolve("ass1.properties");
+        this.setRunningFolder(runningFolder);
+        this.setCategories(new HashMap<>());
+        if (propertiesPath.toFile().exists()) {
             this.loadCategoriesFromPropertiesFile();
-        }else {
-            this.searchFolderBuildCategories();
+        } else {
+            out.println("Can not find ass1.properties. Search folder and generate this file instead.");
+            this.searchFolderBuildCategories(runningFolder);
             this.saveCategoriesFromPropertiesFile();
         }
     }
 
-    public HashMap<String, String> getCategories() {
+    public HashMap<String, Category> getCategories() {
         return categories;
     }
 
-    private void setCategories(HashMap<String, String> categories) {
+    private void setCategories(HashMap<String, Category> categories) {
         this.categories = categories;
     }
 
@@ -64,7 +77,11 @@ public class CategoriesManager {
             prop.load(new FileReader(propertiesPath.toFile()));
             for (final String name :
                     prop.stringPropertyNames()) {
-                this.getCategories().put(name, prop.getProperty(name));
+                Category category = new Category();
+                category.setName(name);
+                category.setLiteratureFiles(new LinkedList<>());
+                category.setPath(Paths.get(prop.getProperty(name).replace(".", System.getProperty("file.separator"))));
+                this.getCategories().put(name, category);
             }
             return true;
         } catch (IOException e) {
@@ -76,7 +93,7 @@ public class CategoriesManager {
         Properties prop = new Properties();
         for (String key :
                 this.getCategories().keySet()) {
-            prop.setProperty(key,this.getCategories().get(key));
+            prop.setProperty(key, this.getCategories().get(key).getPath().toString().replace(System.getProperty("file.separator"), "."));
         }
         try {
             prop.store(new FileWriter(propertiesPath.toFile()), null);
@@ -87,9 +104,35 @@ public class CategoriesManager {
     }
 
 
-    private void searchFolderBuildCategories() {
+    private void searchFolderBuildCategories(Path folder) throws IOException {
+        try (DirectoryStream<Path> dir = Files.newDirectoryStream(folder, file -> (Files.isDirectory(file)))) {
+            for (Path subDir : dir) {
+                this.searchFolderBuildCategories(subDir);
+            }
+        }
 
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(folder, file -> (FileUtils.getFileExtensionName(file.getFileName()).equals("txt")))) {
+
+
+            Category category = new Category();
+            category.setName(folder.getFileName().toString());
+            category.setPath(getRunningFolder().relativize(folder));
+            category.setLiteratureFiles(new ArrayList<>());
+            for (Path file : stream) {
+                category.getLiteratureFiles().add(getRunningFolder().relativize(file));
+            }
+            if (category.getLiteratureFiles().size() > 0) {
+                this.getCategories().put(category.getName(), category);
+            }
+        }
     }
 
 
+    private Path getRunningFolder() {
+        return this.runningFolder;
+    }
+
+    private void setRunningFolder(Path runningFolder) {
+        this.runningFolder = runningFolder;
+    }
 }
