@@ -34,7 +34,7 @@ import java.nio.file.Paths;
 import static java.lang.System.getProperty;
 import static java.lang.System.out;
 
-public class Zipfung {
+public final class Zipfung {
     public static void main(String[] args) throws Exception {
 
         long startTime = System.currentTimeMillis();

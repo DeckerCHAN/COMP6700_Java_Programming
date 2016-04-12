@@ -22,7 +22,19 @@
  * SOFTWARE.
  */
 
-package com.decker.javaProgramming.assignment.ass1.entities;
+package com.decker.javaProgramming.assignment.ass1.feture;
 
-public class WordFrequencyTable {
+import java.nio.file.Path;
+import java.util.LinkedHashMap;
+
+public class CommonTextProcessor implements TextProcessor {
+    @Override
+    public void load(Path file) {
+
+    }
+
+    @Override
+    public LinkedHashMap<String, Long> getSortedMap() {
+        return null;
+    }
 }
