@@ -25,8 +25,10 @@
 package com.decker.javaProgramming.assignment.ass1.feture;
 
 
+import com.decker.javaProgramming.assignment.ass1.utls.CollectionUtils;
+import com.decker.javaProgramming.assignment.ass1.utls.StringUtils;
+
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -45,13 +47,21 @@ public class OptimisedTextProcessor implements TextProcessor {
     public void load(Path file) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(file.toFile()))) {
             for (String line; (line = br.readLine()) != null; ) {
-                line.int
+                String normalLine = StringUtils.stringNormalize(line);
+                for (String word : normalLine.split("\\s+")) {
+                    word = word.intern();
+                    if (map.containsKey(word)) {
+                        map.put(word, map.get(word) + 1);
+                    } else {
+                        map.put(word, 1L);
+                    }
+                }
             }
         }
     }
 
     @Override
     public LinkedHashMap<String, Long> getSortedMap() {
-        return null;
+        return CollectionUtils.sortByValue(this.map);
     }
 }

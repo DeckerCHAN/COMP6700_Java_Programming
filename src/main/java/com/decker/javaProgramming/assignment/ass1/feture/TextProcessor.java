@@ -24,11 +24,9 @@
 
 package com.decker.javaProgramming.assignment.ass1.feture;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 public interface TextProcessor {
     void load(Path file) throws IOException;

@@ -22,33 +22,21 @@
  * SOFTWARE.
  */
 
-package com.decker.javaProgramming.assignment.ass1.feture;
+package com.decker.javaProgramming.assignment.ass1.utls;
 
-import com.decker.javaProgramming.assignment.ass1.utls.StringUtils;
-
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 
-public class CommonTextProcessor implements TextProcessor {
-    private HashMap<String, Long> map = new HashMap<>();
+public class CollectionUtils {
+    public static <K, V extends Comparable<? super V>> LinkedHashMap<K, V> sortByValue(Map<K, V> map) {
+        LinkedHashMap<K, V> result = new LinkedHashMap<>();
+        Stream<Map.Entry<K, V>> st = map.entrySet().stream();
 
-    @Override
-    public void load(Path file) throws IOException {
-        byte[] encoded = Files.readAllBytes(file);
-        String content = new String(encoded, Charset.defaultCharset());
-        content = StringUtils.stringNormalize(content);
+        st.sorted(Comparator.comparing(Map.Entry::getValue))
+                .forEachOrdered(e -> result.put(e.getKey(), e.getValue()));
 
-        for (String word : content.split("\\s+")) {
-
-        }
-    }
-
-    @Override
-    public LinkedHashMap<String, Long> getSortedMap() {
-        return null;
+        return result;
     }
 }
