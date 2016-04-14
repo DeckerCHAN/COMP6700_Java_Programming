@@ -22,38 +22,24 @@
  * SOFTWARE.
  */
 
-package com.decker.javaProgramming.assignment.ass1.entities;
+package com.decker.javaProgramming.assignment.ass1.operations;
 
-import java.nio.file.Path;
-import java.util.LinkedList;
-import java.util.List;
+import static java.lang.System.out;
 
-public class Category {
-    private String name;
-    private Path path;
-    private List<Path> literatureFiles;
-
-    public Path getPath() {
-        return path;
-    }
-
-    public void setPath(Path path) {
-        this.path = path;
-    }
-
-    public List<Path> getLiteratureFiles() {
-        return literatureFiles;
-    }
-
-    public void setLiteratureFiles(List<Path> literatureFiles) {
-        this.literatureFiles = literatureFiles;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+public class HelpOutputOperation implements Operation {
+    @Override
+    public void execute() {
+        out.println("Help in using this program:\n" +
+                "-h displays this message\n" +
+                "-a [\\emph{number}] [-o] runs and reports the first \\emph{number}\n" +
+                "ranked words obtained by merging tables from all\n" +
+                "texts in all categories. The default \\emph{number} value is 50.\n" +
+                "Include the option -o to use string interning when building the table.\n" +
+                "-c \\emph{category} [\\emph{number}] [-o] runs and reports the first\n" +
+                "\\emph{number} ranked words obtained by merging the tables from all\n" +
+                "texts in \\emph{category}. The default \\emph{number} value is 50;\n" +
+                "include the option -o to use string interning when building the table.\n" +
+                "-l lists all available catagories for which at least one text is available\n" +
+                "for processing");
     }
 }

@@ -22,38 +22,20 @@
  * SOFTWARE.
  */
 
-package com.decker.javaProgramming.assignment.ass1.entities;
+package com.decker.javaProgramming.assignment.ass1.operations;
 
-import java.nio.file.Path;
-import java.util.LinkedList;
-import java.util.List;
+import static java.lang.System.out;
 
-public class Category {
-    private String name;
-    private Path path;
-    private List<Path> literatureFiles;
+public class ErrorOutputOperation implements Operation {
+    private String errorMessage;
 
-    public Path getPath() {
-        return path;
+    public ErrorOutputOperation(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
-    public void setPath(Path path) {
-        this.path = path;
-    }
 
-    public List<Path> getLiteratureFiles() {
-        return literatureFiles;
-    }
-
-    public void setLiteratureFiles(List<Path> literatureFiles) {
-        this.literatureFiles = literatureFiles;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public void execute() {
+        out.println(errorMessage);
     }
 }

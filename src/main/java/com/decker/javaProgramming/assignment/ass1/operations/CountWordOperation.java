@@ -26,7 +26,6 @@ package com.decker.javaProgramming.assignment.ass1.operations;
 
 import com.decker.javaProgramming.assignment.ass1.WordFrequencyTable;
 import com.decker.javaProgramming.assignment.ass1.utls.CollectionUtils;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.nio.file.Path;
 import java.util.*;
@@ -36,17 +35,9 @@ import static java.lang.System.out;
 public abstract class CountWordOperation implements Operation {
 
     private final static Integer DEFAULT_OUTPUT_INDEX = 50;
-
-    public List<Path> getFiles() {
-        return files;
-    }
-
-    private void setFiles(List<Path> files) {
-        this.files = files;
-    }
-
     private List<Path> files;
     private Integer outputIndex;
+    private List<WordFrequencyTable> tables;
 
     private CountWordOperation(Integer outputIndex) {
         this.files = new LinkedList<>();
@@ -59,7 +50,7 @@ public abstract class CountWordOperation implements Operation {
         files.add(file);
     }
 
-    public CountWordOperation(Collection <Path> files, Integer outputIndex) {
+    public CountWordOperation(Collection<Path> files, Integer outputIndex) {
         this(outputIndex);
         this.getFiles().addAll(files);
     }
@@ -69,9 +60,17 @@ public abstract class CountWordOperation implements Operation {
         files.add(file);
     }
 
-    public CountWordOperation(Collection <Path> files) {
+    public CountWordOperation(Collection<Path> files) {
         this(DEFAULT_OUTPUT_INDEX);
         this.getFiles().addAll(files);
+    }
+
+    public List<Path> getFiles() {
+        return files;
+    }
+
+    private void setFiles(List<Path> files) {
+        this.files = files;
     }
 
     public List<WordFrequencyTable> getTables() {
@@ -82,12 +81,17 @@ public abstract class CountWordOperation implements Operation {
         this.tables = tables;
     }
 
-    private List<WordFrequencyTable> tables;
-
-    public LinkedHashMap<String, Long> getResult() {
+    public LinkedHashMap<String, Long> getCombinedTable() {
         HashMap<String, Long> result = new HashMap<>();
         for (WordFrequencyTable table : this.getTables()) {
-            result.putAll(table.getZipfTable());
+            Map<String, Long> currentZipfTable =table.getZipfTable();
+            for (String word : currentZipfTable.keySet()) {
+                if (result.containsKey(word)) {
+                    result.put(word, result.get(word) + currentZipfTable.get(word));
+                } else {
+                    result.put(word, currentZipfTable.get(word));
+                }
+            }
         }
         return CollectionUtils.sortByValue(result);
     }
@@ -100,11 +104,11 @@ public abstract class CountWordOperation implements Operation {
         }
         out.println();
         out.println(String.format("The cumulative rank-frequency table (first %d entries) ", this.getOutputIndex()));
-        LinkedHashMap<String, Long> result = this.getResult();
+        LinkedHashMap<String, Long> result = this.getCombinedTable();
         Iterator<String> ite = result.keySet().iterator();
         for (int i = 0; i < this.getOutputIndex() && ite.hasNext(); i++) {
             String key = ite.next();
-            out.println(String.format("%d (%s) %d", i, key, result.get(key)));
+            out.println(String.format("%d (%s) %d", i + 1, key, result.get(key)));
         }
         out.println();
     }

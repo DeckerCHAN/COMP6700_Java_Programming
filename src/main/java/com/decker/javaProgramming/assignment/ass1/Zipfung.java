@@ -26,21 +26,14 @@ package com.decker.javaProgramming.assignment.ass1;
 
 import com.decker.javaProgramming.assignment.ass1.cli.Argument;
 import com.decker.javaProgramming.assignment.ass1.cli.Cli;
-import com.decker.javaProgramming.assignment.ass1.feture.CommonTableBuilder;
-import com.decker.javaProgramming.assignment.ass1.operations.DirectCountWordOperation;
-import com.decker.javaProgramming.assignment.ass1.operations.ListingOperation;
-import com.decker.javaProgramming.assignment.ass1.operations.Operation;
-import com.decker.javaProgramming.assignment.ass1.operations.OptimisedCountWordOperation;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import com.decker.javaProgramming.assignment.ass1.operations.*;
 
 import java.nio.file.Paths;
 
 import static java.lang.System.getProperty;
-import static java.lang.System.out;
 
 public final class Zipfung {
     public static void main(String[] args) throws Exception {
-
 
         Cli cli = new Cli(args);
         CategoriesManager categoriesManager = new CategoriesManager(Paths.get(getProperty("user.dir")));
@@ -50,26 +43,38 @@ public final class Zipfung {
         } else if (cli.hasArgument("c")) {
             Argument arg = cli.getArgument("c");
 
-
+            //TODO: Output error if category not exists
             if (cli.hasArgument("o")) {
                 if (arg.getValuesCount() == 1) {
                     operation = new OptimisedCountWordOperation(categoriesManager.getCategories().get(arg.getValues().get(0)).getLiteratureFiles());
                 } else if (arg.getValuesCount() == 2) {
                     operation = new OptimisedCountWordOperation(categoriesManager.getCategories().get(arg.getValues().get(0)).getLiteratureFiles(), Integer.valueOf(arg.getValues().get(1)));
-
                 }
             } else {
                 if (arg.getValuesCount() == 1) {
                     operation = new DirectCountWordOperation(categoriesManager.getCategories().get(arg.getValues().get(0)).getLiteratureFiles());
                 } else if (arg.getValuesCount() == 2) {
                     operation = new DirectCountWordOperation(categoriesManager.getCategories().get(arg.getValues().get(0)).getLiteratureFiles(), Integer.valueOf(arg.getValues().get(1)));
-
                 }
-
             }
 
+        } else if (cli.hasArgument("a")) {
+            Argument arg = cli.getArgument("a");
+            if (cli.hasArgument("o")) {
+                if (arg.getValuesCount() == 0) {
+                    operation = new OptimisedCountWordOperation(categoriesManager.getAllLiteratureFiles());
+                } else if (arg.getValuesCount() == 1) {
+                    operation = new OptimisedCountWordOperation(categoriesManager.getAllLiteratureFiles(), Integer.valueOf(arg.getValues().get(0)));
+                }
+            } else {
+                if (arg.getValuesCount() == 0) {
+                    operation = new DirectCountWordOperation(categoriesManager.getAllLiteratureFiles());
+                } else if (arg.getValuesCount() == 1) {
+                    operation = new DirectCountWordOperation(categoriesManager.getAllLiteratureFiles(), Integer.valueOf(arg.getValues().get(0)));
+                }
+            }
         } else if (cli.hasArgument("h")) {
-            //TODO: print help
+            operation = new HelpOutputOperation();
         } else {
 
         }

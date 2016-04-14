@@ -34,10 +34,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Properties;
+import java.util.*;
 
 import static java.lang.System.out;
 
@@ -143,5 +140,14 @@ public class CategoriesManager {
 
     private void setRunningFolder(Path runningFolder) {
         this.runningFolder = runningFolder;
+    }
+
+    public List<Path> getAllLiteratureFiles() {
+        List<Path> result = new LinkedList<>();
+        for (Category category :
+                this.getCategories().values()) {
+            result.addAll(category.getLiteratureFiles());
+        }
+        return result;
     }
 }
