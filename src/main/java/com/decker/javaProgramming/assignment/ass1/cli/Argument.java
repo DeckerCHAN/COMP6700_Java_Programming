@@ -29,6 +29,7 @@ import java.util.ArrayList;
 public class Argument {
     private String argumentKey;
     private ArrayList<String> values;
+
     public Argument(String key) {
         this.argumentKey = key;
         this.values = new ArrayList<String>();
@@ -40,6 +41,10 @@ public class Argument {
 
     public ArrayList<String> getValues() {
         return values;
+    }
+
+    public Integer getValuesCount() {
+        return values.size();
     }
 
     private void setValues(ArrayList<String> values) {

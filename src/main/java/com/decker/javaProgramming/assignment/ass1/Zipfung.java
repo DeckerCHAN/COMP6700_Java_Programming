@@ -26,8 +26,12 @@ package com.decker.javaProgramming.assignment.ass1;
 
 import com.decker.javaProgramming.assignment.ass1.cli.Argument;
 import com.decker.javaProgramming.assignment.ass1.cli.Cli;
+import com.decker.javaProgramming.assignment.ass1.feture.CommonTableBuilder;
+import com.decker.javaProgramming.assignment.ass1.operations.DirectCountWordOperation;
 import com.decker.javaProgramming.assignment.ass1.operations.ListingOperation;
 import com.decker.javaProgramming.assignment.ass1.operations.Operation;
+import com.decker.javaProgramming.assignment.ass1.operations.OptimisedCountWordOperation;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.nio.file.Paths;
 
@@ -37,18 +41,30 @@ import static java.lang.System.out;
 public final class Zipfung {
     public static void main(String[] args) throws Exception {
 
-        long startTime = System.currentTimeMillis();
+
         Cli cli = new Cli(args);
         CategoriesManager categoriesManager = new CategoriesManager(Paths.get(getProperty("user.dir")));
-
+        Operation operation = null;
         if (cli.hasArgument("l")) {
-            Operation listOperation =new ListingOperation(categoriesManager);
-            listOperation.execute();
+            operation = new ListingOperation(categoriesManager);
         } else if (cli.hasArgument("c")) {
             Argument arg = cli.getArgument("c");
-            if (cli.hasArgument("o")) {
 
+
+            if (cli.hasArgument("o")) {
+                if (arg.getValuesCount() == 1) {
+                    operation = new OptimisedCountWordOperation(categoriesManager.getCategories().get(arg.getValues().get(0)).getLiteratureFiles());
+                } else if (arg.getValuesCount() == 2) {
+                    operation = new OptimisedCountWordOperation(categoriesManager.getCategories().get(arg.getValues().get(0)).getLiteratureFiles(), Integer.valueOf(arg.getValues().get(1)));
+
+                }
             } else {
+                if (arg.getValuesCount() == 1) {
+                    operation = new DirectCountWordOperation(categoriesManager.getCategories().get(arg.getValues().get(0)).getLiteratureFiles());
+                } else if (arg.getValuesCount() == 2) {
+                    operation = new DirectCountWordOperation(categoriesManager.getCategories().get(arg.getValues().get(0)).getLiteratureFiles(), Integer.valueOf(arg.getValues().get(1)));
+
+                }
 
             }
 
@@ -58,6 +74,10 @@ public final class Zipfung {
 
         }
 
+        long startTime = System.currentTimeMillis();
+        if (operation != null) {
+            operation.execute();
+        }
         long endTime = System.currentTimeMillis();
         long totalTime = endTime - startTime;
         System.out.printf("Totally %d(ms) used.%n", totalTime);

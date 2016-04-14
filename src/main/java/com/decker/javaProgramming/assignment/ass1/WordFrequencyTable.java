@@ -24,48 +24,40 @@
 
 package com.decker.javaProgramming.assignment.ass1;
 
-import com.decker.javaProgramming.assignment.ass1.feture.TextProcessor;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import com.decker.javaProgramming.assignment.ass1.feture.TableBuilder;
 
-import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 public final class WordFrequencyTable {
-    private long buildTime;
-    private TextProcessor processor;
+
+
+    private void setBuilder(TableBuilder builder) {
+        this.builder = builder;
+    }
+
+    private TableBuilder builder;
+
+    public Map<String, Long> getZipfTable() {
+        return zipfTable;
+    }
+
+    private void setZipfTable(Map<String, Long> zipfTable) {
+        this.zipfTable = zipfTable;
+    }
+
     private Map<String, Long> zipfTable;
 
-    public WordFrequencyTable(Path textPath, TextProcessor processor) {
-        this.processor = processor;
-        this.zipfTable = buildTable(textPath);
+    public WordFrequencyTable(Path textPath, TableBuilder builder) throws IOException {
+        this.builder = builder;
+        buildTable(textPath);
     }
 
-    private Map<String, Long> buildTable(Path file) {
-        long start = System.currentTimeMillis();
-        this.processor.load(file);
-        this.zipfTable = this.processor.getSortedMap();
-        long finish = System.currentTimeMillis();
-        this.setBuildTime(finish - start);
+    private void buildTable(Path file) throws IOException {
+        this.builder.load(file);
+        this.zipfTable = this.builder.getMap();
 
-        return null;
 
-    }
-
-    public long getBuildTime() {
-        return buildTime;
-    }
-
-    public void printTable() {
-
-    }
-
-    private void setBuildTime(long buildTime) {
-        this.buildTime = buildTime;
-    }
-
-    public WordFrequencyTable combine(WordFrequencyTable table) {
-        throw new NotImplementedException();
     }
 }

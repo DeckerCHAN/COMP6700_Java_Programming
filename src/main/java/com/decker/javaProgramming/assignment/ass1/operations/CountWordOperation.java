@@ -24,6 +24,96 @@
 
 package com.decker.javaProgramming.assignment.ass1.operations;
 
+import com.decker.javaProgramming.assignment.ass1.WordFrequencyTable;
+import com.decker.javaProgramming.assignment.ass1.utls.CollectionUtils;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.nio.file.Path;
+import java.util.*;
+
+import static java.lang.System.out;
+
 public abstract class CountWordOperation implements Operation {
 
+    private final static Integer DEFAULT_OUTPUT_INDEX = 50;
+
+    public List<Path> getFiles() {
+        return files;
+    }
+
+    private void setFiles(List<Path> files) {
+        this.files = files;
+    }
+
+    private List<Path> files;
+    private Integer outputIndex;
+
+    private CountWordOperation(Integer outputIndex) {
+        this.files = new LinkedList<>();
+        this.tables = new LinkedList<>();
+        this.outputIndex = outputIndex;
+    }
+
+    public CountWordOperation(Path file, Integer outputIndex) {
+        this(outputIndex);
+        files.add(file);
+    }
+
+    public CountWordOperation(Collection <Path> files, Integer outputIndex) {
+        this(outputIndex);
+        this.getFiles().addAll(files);
+    }
+
+    public CountWordOperation(Path file) {
+        this(DEFAULT_OUTPUT_INDEX);
+        files.add(file);
+    }
+
+    public CountWordOperation(Collection <Path> files) {
+        this(DEFAULT_OUTPUT_INDEX);
+        this.getFiles().addAll(files);
+    }
+
+    public List<WordFrequencyTable> getTables() {
+        return tables;
+    }
+
+    protected void setTables(List<WordFrequencyTable> tables) {
+        this.tables = tables;
+    }
+
+    private List<WordFrequencyTable> tables;
+
+    public LinkedHashMap<String, Long> getResult() {
+        HashMap<String, Long> result = new HashMap<>();
+        for (WordFrequencyTable table : this.getTables()) {
+            result.putAll(table.getZipfTable());
+        }
+        return CollectionUtils.sortByValue(result);
+    }
+
+    public void printResult() {
+        out.println("The following files from the poetry category have been analysed:");
+        for (Path file :
+                this.getFiles()) {
+            out.println(file.getFileName().toString());
+        }
+        out.println();
+        out.println(String.format("The cumulative rank-frequency table (first %d entries) ", this.getOutputIndex()));
+        LinkedHashMap<String, Long> result = this.getResult();
+        Iterator<String> ite = result.keySet().iterator();
+        for (int i = 0; i < this.getOutputIndex() && ite.hasNext(); i++) {
+            String key = ite.next();
+            out.println(String.format("%d (%s) %d", i, key, result.get(key)));
+        }
+        out.println();
+    }
+
+    public Integer getOutputIndex() {
+        return outputIndex;
+    }
+
+    private void setOutputIndex(Integer outputIndex) {
+        this.outputIndex = outputIndex;
+    }
 }

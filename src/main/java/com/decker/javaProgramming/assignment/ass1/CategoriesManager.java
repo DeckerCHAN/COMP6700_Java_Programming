@@ -77,11 +77,20 @@ public class CategoriesManager {
             prop.load(new FileReader(propertiesPath.toFile()));
             for (final String name :
                     prop.stringPropertyNames()) {
-                Category category = new Category();
-                category.setName(name);
-                category.setLiteratureFiles(new LinkedList<>());
-                category.setPath(Paths.get(prop.getProperty(name).replace(".", System.getProperty("file.separator"))));
-                this.getCategories().put(name, category);
+                Path folder = Paths.get(prop.getProperty(name).replace(".", System.getProperty("file.separator")));
+
+                try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(prop.getProperty(name).replace(".", System.getProperty("file.separator"))), file -> (FileUtils.getFileExtensionName(file.getFileName()).equals("txt")))) {
+                    Category category = new Category();
+                    category.setName(folder.getFileName().toString());
+                    category.setPath(folder);
+                    category.setLiteratureFiles(new ArrayList<>());
+                    for (Path file : stream) {
+                        category.getLiteratureFiles().add(file);
+                    }
+                    if (category.getLiteratureFiles().size() > 0) {
+                        this.getCategories().put(category.getName(), category);
+                    }
+                }
             }
             return true;
         } catch (IOException e) {

@@ -24,31 +24,13 @@
 
 package com.decker.javaProgramming.assignment.ass1.feture;
 
-import com.decker.javaProgramming.assignment.ass1.utls.StringUtils;
-
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
-public class CommonTextProcessor implements TextProcessor {
-    private HashMap<String, Long> map = new HashMap<>();
+public interface TableBuilder {
+    void load(Path file) throws IOException;
 
-    @Override
-    public void load(Path file) throws IOException {
-        byte[] encoded = Files.readAllBytes(file);
-        String content = new String(encoded, Charset.defaultCharset());
-        content = StringUtils.stringNormalize(content);
-
-        for (String word : content.split("\\s+")) {
-
-        }
-    }
-
-    @Override
-    public LinkedHashMap<String, Long> getSortedMap() {
-        return null;
-    }
+    Map<String, Long> getMap();
 }

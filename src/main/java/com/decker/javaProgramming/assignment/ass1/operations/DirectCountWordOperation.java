@@ -24,14 +24,48 @@
 
 package com.decker.javaProgramming.assignment.ass1.operations;
 
-public class DirectCountWordOperation extends CountWordOperation {
+import com.decker.javaProgramming.assignment.ass1.WordFrequencyTable;
+import com.decker.javaProgramming.assignment.ass1.feture.CommonTableBuilder;
+import com.decker.javaProgramming.assignment.ass1.feture.OptimisedTableBuilder;
+import com.decker.javaProgramming.assignment.ass1.feture.TableBuilder;
+import javafx.scene.control.Tab;
 
-    public DirectCountWordOperation() {
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Collection;
+import java.util.HashMap;
 
+public final class DirectCountWordOperation extends CountWordOperation {
+    public DirectCountWordOperation(Path file, Integer outputIndex) {
+        super(file, outputIndex);
+    }
+
+    public DirectCountWordOperation(Collection<Path> files, Integer outputIndex) {
+        super(files, outputIndex);
+    }
+
+    public DirectCountWordOperation(Path file) {
+        super(file);
+    }
+
+    public DirectCountWordOperation(Collection<Path> files) {
+        super(files);
     }
 
     @Override
     public void execute() {
+        for (Path path : this.getFiles()) {
+            try {
+                TableBuilder builder = new CommonTableBuilder();
+                WordFrequencyTable table = new WordFrequencyTable(path, builder);
+                this.getTables().add(table);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        this.printResult();
 
     }
+
 }

@@ -34,7 +34,7 @@ public class CollectionUtils {
         LinkedHashMap<K, V> result = new LinkedHashMap<>();
         Stream<Map.Entry<K, V>> st = map.entrySet().stream();
 
-        st.sorted(Comparator.comparing(Map.Entry::getValue))
+        st.sorted(Map.Entry.<K, V>comparingByValue().reversed())
                 .forEachOrdered(e -> result.put(e.getKey(), e.getValue()));
 
         return result;

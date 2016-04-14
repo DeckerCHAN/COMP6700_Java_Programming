@@ -22,10 +22,9 @@
  * SOFTWARE.
  */
 
-package com.decker.javaProgramming.assignment.ass1.utls;
+package com.decker.javaProgramming.assignment.ass1.entities;
 
-public class StringUtils {
-    public static String stringNormalize(String string) {
-        return string.toLowerCase().replaceAll("[^a-zA-Z\\s]", " ");
-    }
+public class WordFrequency {
+    private String word;
+    private Long frequency;
 }

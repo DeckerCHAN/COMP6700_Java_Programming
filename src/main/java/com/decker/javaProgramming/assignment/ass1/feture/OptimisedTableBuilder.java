@@ -24,12 +24,48 @@
 
 package com.decker.javaProgramming.assignment.ass1.feture;
 
+
+import com.decker.javaProgramming.assignment.ass1.utls.CollectionUtils;
+import com.decker.javaProgramming.assignment.ass1.utls.StringUtils;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
-public interface TextProcessor {
-    void load(Path file) throws IOException;
+public class OptimisedTableBuilder implements TableBuilder {
 
-    LinkedHashMap<String, Long> getSortedMap();
+    private HashMap<String, Long> map;
+
+    public OptimisedTableBuilder() {
+        this.map = new HashMap<>();
+    }
+
+    @Override
+    public void load(Path file) throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader(file.toFile()))) {
+            for (String line; (line = br.readLine()) != null; ) {
+                String normalLine = StringUtils.stringNormalize(line);
+                for (String word : normalLine.split("\\s+")) {
+                    if (word == null || word.length() == 0) {
+                        continue;
+                    }
+                    word = word.intern();
+                    if (map.containsKey(word)) {
+                        map.put(word, map.get(word) + 1);
+                    } else {
+                        map.put(word, 1L);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public Map<String, Long> getMap() {
+        return this.map;
+    }
 }

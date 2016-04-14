@@ -24,11 +24,44 @@
 
 package com.decker.javaProgramming.assignment.ass1.operations;
 
-public class OptimisedCountWordOperation extends CountWordOperation {
+import com.decker.javaProgramming.assignment.ass1.WordFrequencyTable;
+import com.decker.javaProgramming.assignment.ass1.feture.CommonTableBuilder;
+import com.decker.javaProgramming.assignment.ass1.feture.OptimisedTableBuilder;
+import com.decker.javaProgramming.assignment.ass1.feture.TableBuilder;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Collection;
+
+public class OptimisedCountWordOperation extends CountWordOperation {
+    public OptimisedCountWordOperation(Path file, Integer outputIndex) {
+        super(file, outputIndex);
+    }
+
+    public OptimisedCountWordOperation(Collection<Path> files, Integer outputIndex) {
+        super(files, outputIndex);
+    }
+
+    public OptimisedCountWordOperation(Path file) {
+        super(file);
+    }
+
+    public OptimisedCountWordOperation(Collection<Path> files) {
+        super(files);
+    }
 
     @Override
     public void execute() {
+        for (Path path : this.getFiles()) {
+            try {
+                TableBuilder builder = new OptimisedTableBuilder();
+                WordFrequencyTable table = new WordFrequencyTable(path, builder);
+                this.getTables().add(table);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
+        this.printResult();
     }
 }
