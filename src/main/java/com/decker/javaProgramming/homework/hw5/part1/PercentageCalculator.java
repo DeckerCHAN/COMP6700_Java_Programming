@@ -20,15 +20,14 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
  */
 
-package com.decker.javaProgramming.lab.lab5.probA;
+package com.decker.javaProgramming.homework.hw5.part1;
 
 
 import com.decker.javaProgramming.utils.InputType;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.mutable.MutableInt;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.mutable.MutableInt;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
