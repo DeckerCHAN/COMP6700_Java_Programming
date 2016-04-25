@@ -33,19 +33,20 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 
-public class PercentageCalculator {
+import static java.lang.System.out;
 
-    public static void main(String [] args)
-    {
-        PercentageCalculator calculator =new PercentageCalculator();
-        calculator.receiveUserInput();
-        calculator.calculate();
-    }
+public class PercentageCalculator {
 
     private LinkedList<Integer> inputList;
 
     public PercentageCalculator() {
         this.inputList = new LinkedList<Integer>();
+    }
+
+    public static void main(String[] args) {
+        PercentageCalculator calculator = new PercentageCalculator();
+        calculator.receiveUserInput();
+        calculator.calculate();
     }
 
     public LinkedList<Integer> getInputList() {
@@ -79,16 +80,20 @@ public class PercentageCalculator {
         while (true) {
             MutableInt i = new MutableInt();
             InputType result = this.receiveInputInterger(i);
-            switch (result) {
-                case Normal:
-                    this.inputList.add(i.intValue());
-                    break;
-                case Error:
-                    System.out.println("Non-negative integers only, try again:");
-                    break;
-                case Determined:
-                    return;
+            try {
+                switch (result) {
+                    case Normal:
+                        this.inputList.add(i.intValue());
+                        break;
+                    case Error:
+                        throw new BadValueException("Non-negative integers only, try again:");
+                    case Determined:
+                        return;
+                }
+            } catch (BadValueException ex) {
+                out.println(ex);
             }
+
         }
     }
 
@@ -99,12 +104,12 @@ public class PercentageCalculator {
             sum += i;
         }
 
-        System.out.println("The numbers and percentage:");
+        out.println("The numbers and percentage:");
         for (Integer i :
                 this.inputList) {
-            System.out.printf("%4d  %6.1f%% %n", i, ((float) (i) * 100F / (float) sum));
+            out.printf("%4d  %6.1f%% %n", i, ((float) (i) * 100F / (float) sum));
         }
-        System.out.printf("%4d  %6.1f%% %n", sum, ((float) (sum) * 100F / (float) sum));
+        out.printf("%4d  %6.1f%% %n", sum, ((float) (sum) * 100F / (float) sum));
 
     }
 }
