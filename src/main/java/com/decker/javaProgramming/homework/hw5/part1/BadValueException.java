@@ -24,7 +24,7 @@
 
 package com.decker.javaProgramming.homework.hw5.part1;
 
-public class BadValueException extends RuntimeException {
+public class BadValueException extends Exception {
     public BadValueException(String message) {
         super(message);
     }

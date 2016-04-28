@@ -24,7 +24,11 @@
 
 package com.decker.javaProgramming.homework.hw5.part2;
 
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 import static java.lang.System.out;
 
@@ -56,22 +60,33 @@ public class BottleShop {
     }
 
     public void printBottleListByPrice() {
+        System.out.println("Bottle list by Price");
         this.printList(this.getSortedByPrice());
     }
 
     public void printBottleListByBrandName() {
+        System.out.println("Bottle list by Name");
         this.printList(this.getSortedByBrand());
+    }
+
+    public void printBottleListByAlcoholStrength() {
+        System.out.println("Bottle list by Alcohol Strength");
+        this.printList(this.getSortedByAlcoholStrength());
+    }
+
+    public void printBottleListByAlcoholContent() {
+        System.out.println("Bottle list by Alcohol Content");
+        this.printList(this.getSortedByAlcoholContent());
+    }
+
+    public void printBottleListByBottleColor() {
+        System.out.println("Bottle list by Bottle Color");
+        this.printList(this.getSortedByBottleColor());
     }
 
     public LinkedList<Bottle> getSortedByPrice() {
         LinkedList<Bottle> result = new LinkedList<>(this.bottles);
-        Collections.sort(result, (o1, o2) -> {
-            if (o1.getPrice() > o2.getPrice()) {
-                return 1;
-            } else {
-                return 2;
-            }
-        });
+        Collections.sort(result, (o1, o2) -> o1.getPrice().compareTo(o2.getPrice()));
 
         return result;
     }
@@ -84,22 +99,33 @@ public class BottleShop {
         return result;
     }
 
+    public LinkedList<Bottle> getSortedByAlcoholStrength() {
+        LinkedList<Bottle> result = new LinkedList<>(this.bottles);
+        Collections.sort(result, (o1, o2) -> o1.getBeer().getStrength().compareTo(o2.getBeer().getStrength()));
+
+        return result;
+    }
+
+    public LinkedList<Bottle> getSortedByAlcoholContent() {
+        LinkedList<Bottle> result = new LinkedList<>(this.bottles);
+        Collections.sort(result, (o1, o2) -> o1.getAlcoholContent().compareTo(o2.getAlcoholContent()));
+
+        return result;
+    }
+
+    public LinkedList<Bottle> getSortedByBottleColor() {
+        LinkedList<Bottle> result = new LinkedList<>(this.bottles);
+        Collections.sort(result, (o1, o2) -> o1.getGlassColour().compareTo(o2.getGlassColour()));
+
+        return result;
+    }
+
     private void printList(List<Bottle> list) {
         list.forEach(out::println);
     }
 
-    private void randomBottles(Integer number) {
-        for (int i = 0; i < number; i++) {
-            Bottle bottle = new Bottle(new Beer(this.getRandomWord(5),new Random().nextDouble()),new Color());
-        }
-    }
-
-    private String getRandomWord(int length) {
-        String r = "";
-        for (int i = 0; i < length; i++) {
-            r += (char) (Math.random() * 26 + 97);
-        }
-        return r;
+    public void addBottle(Bottle bottle) {
+        this.bottles.add(bottle);
     }
 
 }

@@ -24,14 +24,8 @@
 
 package com.decker.javaProgramming.homework.hw5.part1;
 
-
-import com.decker.javaProgramming.utils.InputType;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.mutable.MutableInt;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.LinkedList;
+import java.util.Scanner;
 
 import static java.lang.System.out;
 
@@ -40,12 +34,12 @@ public class PercentageCalculator {
     private LinkedList<Integer> inputList;
 
     public PercentageCalculator() {
-        this.inputList = new LinkedList<Integer>();
+        this.inputList = new LinkedList<>();
     }
 
     public static void main(String[] args) {
         PercentageCalculator calculator = new PercentageCalculator();
-        calculator.receiveUserInput();
+        calculator.receiveUserInputs();
         calculator.calculate();
     }
 
@@ -57,51 +51,54 @@ public class PercentageCalculator {
         this.inputList = inputList;
     }
 
-    private InputType receiveInputInterger(MutableInt number) {
-        try {
-            String line = new BufferedReader(new InputStreamReader(System.in)).readLine();
 
-            if (StringUtils.isBlank(line)) {
-                return InputType.Determined;
-            }
-            Integer value = Integer.valueOf(line);
-            if (value <= 0) {
-                return InputType.Error;
-            }
-            number.setValue(value);
-            return InputType.Normal;
-        } catch (Exception ex) {
-            return InputType.Error;
-        }
+    private Boolean isEmptyString(String content) {
+        return (content == null || content.length() == 0);
 
     }
 
-    public void receiveUserInput() {
-        while (true) {
-            MutableInt i = new MutableInt();
-            InputType result = this.receiveInputInterger(i);
-            try {
-                switch (result) {
-                    case Normal:
-                        this.inputList.add(i.intValue());
-                        break;
-                    case Error:
-                        throw new BadValueException("Non-negative integers only, try again:");
-                    case Determined:
-                        return;
+    public void receiveUserInputs() {
+        try (Scanner sc = new Scanner(System.in)) {
+            String content;
+            while (!this.isEmptyString(content = sc.nextLine())) {
+                try {
+                    this.inputList.add(this.getInteger(content));
+                } catch (BadValueException e) {
+                    out.println("Non-negative integers only, try again:");
                 }
-            } catch (BadValueException ex) {
-                out.println(ex);
             }
+        }
 
+    }
+
+    private Integer getInteger(String content) throws BadValueException {
+
+        try {
+            Integer i = Integer.valueOf(content);
+            if (i < 0) {
+                throw new Exception();
+            }
+            return i;
+        } catch (Exception ex) {
+            throw new BadValueException(ex.getMessage());
         }
     }
+
 
     public void calculate() {
+        if (this.inputList.size() == 0) {
+            out.println("Empty input list");
+            return;
+        }
         Integer sum = 0;
         for (Integer i :
                 this.inputList) {
             sum += i;
+        }
+
+        if (sum == 0) {
+            out.println("Zero summary!");
+            return;
         }
 
         out.println("The numbers and percentage:");

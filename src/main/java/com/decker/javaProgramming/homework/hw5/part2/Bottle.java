@@ -49,7 +49,6 @@ public class Bottle {
         return beer;
     }
 
-
     public Double getVolume() {
         return volume;
     }
@@ -60,7 +59,7 @@ public class Bottle {
 
     @Override
     public String toString() {
-        return String.format("Beer name:%10s Bottle color:%6s Volume: %8f Price:%8f AlcoholContent:%5f", this.getBeer().getBrandName(), this.getGlassColour(), this.getVolume(), this.getPrice(), this.getAlcoholContent());
+        return String.format("Beer name:%10s Bottle color:%6s Volume: %.2f(ml) Price:A$%.2f  AlcoholContent:%.2f(ml)", this.getBeer().getBrandName(), this.getGlassColour(), this.getVolume(), this.getPrice(), this.getAlcoholContent());
     }
 
     public Color getGlassColour() {
