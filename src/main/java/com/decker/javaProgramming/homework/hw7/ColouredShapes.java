@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.decker.javaProgramming.homework.hw6;
+package com.decker.javaProgramming.homework.hw7;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
