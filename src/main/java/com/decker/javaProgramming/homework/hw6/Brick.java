@@ -1,4 +1,4 @@
-package trump;
+package com.decker.javaProgramming.homework.hw6;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.sqrt;

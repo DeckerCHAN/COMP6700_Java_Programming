@@ -1,4 +1,4 @@
-package trump;
+package com.decker.javaProgramming.homework.hw6;
 
 import java.util.Random;
 import java.util.stream.*;

@@ -1,4 +1,4 @@
-package trump;
+package com.decker.javaProgramming.homework.hw6;
 
 import java.util.*;
 import java.util.stream.*;
@@ -17,7 +17,7 @@ public class DonaldTrump {
         System.out.printf("Will build a wall %d wide and %d tall%n", 
             width, height);
         System.out.println(String.join("", Collections.nCopies(width,"==")));
-        Wall trumpWall = 
+        Wall trumpWall =
             Stream.generate(() -> new Ball(10.0))
              .filter(b -> b.colour == Ball.Colour.RED)
              .map(Brick::new)
