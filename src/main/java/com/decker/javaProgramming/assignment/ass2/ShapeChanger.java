@@ -35,6 +35,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -45,6 +46,7 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.lang.System.out;
@@ -97,6 +99,7 @@ public class ShapeChanger extends Application {
         MenuItem triangle = new MenuItem("Triangle");
         triangle.onActionProperty().set(this::getTriangleMorphEventHandler);
         MenuItem ellipse = new MenuItem("Ellipse");
+        ellipse.onActionProperty().set(this::getEllipseMorphEventHandler);
         MenuItem rectangle = new MenuItem("Rectangle");
         rectangle.onActionProperty().set(e -> {
             this.rootGroup.getChildren().remove(this.targetPath);
@@ -104,11 +107,7 @@ public class ShapeChanger extends Application {
 
         });
         MenuItem polygon = new MenuItem("Polygon");
-        polygon.onActionProperty().set(e -> {
-            this.rootGroup.getChildren().remove(this.targetPath);
-            this.rootGroup.getChildren().add(new Polygon(new Point2D(this.mainScene.getWidth() / 2, this.mainScene.getHeight() / 2), 50D, 12));
-
-        });
+        polygon.onActionProperty().set(this::getPolygonMorphEventHandler);
         menuMorph.getItems().addAll(triangle, ellipse, rectangle, polygon);
 
         this.menuBar.getMenus().addAll(menuFile, menuEdit, menuMorph);
@@ -124,6 +123,52 @@ public class ShapeChanger extends Application {
         this.primaryStage.setScene(this.mainScene);
         this.primaryStage.show();
         this.primaryStage.setOnCloseRequest(e -> Platform.exit());
+
+    }
+
+    private void getPolygonMorphEventHandler(ActionEvent actionEvent) {
+        if (this.state != State.SELECTING || this.selectedPath == null) {
+            Utils.popupMessage("Not allowed", "Using Morph in Selecting Mode.", "You should switch to select mode and select at least 1 shape. ");
+            return;
+        }
+
+        if (this.targetPath != null) this.rootGroup.getChildren().remove(this.targetPath);
+
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Polygon side");
+        dialog.setHeaderText("The side number of Polygon.");
+        dialog.setContentText("Please enter the number:");
+
+        Optional<String> result = dialog.showAndWait();
+        if (!result.isPresent()) {
+            return;
+        }
+
+        String numberString = result.get();
+        Integer number;
+        try {
+            number = Integer.valueOf(numberString);
+        } catch (Exception e) {
+            return;
+        }
+
+        this.targetPath = new Polygon(new Point2D(this.mainScene.getWidth() /3, this.mainScene.getHeight() / 3), 100D, number);
+
+        this.rootGroup.getChildren().add(this.targetPath);
+
+    }
+
+    private void getEllipseMorphEventHandler(ActionEvent actionEvent) {
+        if (this.state != State.SELECTING || this.selectedPath == null) {
+            Utils.popupMessage("Not allowed", "Using Morph in Selecting Mode.", "You should switch to select mode and select at least 1 shape. ");
+            return;
+        }
+
+        if (this.targetPath != null) this.rootGroup.getChildren().remove(this.targetPath);
+
+        this.targetPath = new Ellipse(this.mainScene.getWidth(), this.mainScene.getHeight());
+
+        this.rootGroup.getChildren().add(this.targetPath);
 
     }
 

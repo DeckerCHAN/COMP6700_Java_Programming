@@ -26,29 +26,42 @@ package com.decker.javaProgramming.assignment.ass2;
 
 import javafx.geometry.Point2D;
 
+import java.util.ArrayList;
 
-public class Polygon extends ExtendedPath {
 
-    private Point2D startPoint;
-    private Double radius;// 外接圆的半径
+public class Polygon extends ShapePath {
 
-    public Polygon(Point2D start, Double radius, Integer numberOfSides) {
-        super(start);
-        this.startPoint = start;
+    private Point2D centerPoint;
+    private Double radius;
+    private Integer numberOfSides;
+    private ArrayList<Point2D> polPoints;
+
+    public Polygon(Point2D centerPoint, Double radius, Integer numberOfSides) {
+        super();
+        this.polPoints = new ArrayList<>();
+        this.centerPoint = centerPoint;
         this.radius = radius;
-        this.posOfPoint(numberOfSides);
-    }
+        this.numberOfSides = numberOfSides;
+        this.pushPolygonPoints();
 
-    private void posOfPoint(int sideNumber) {
-
-        for (int i = 1; i < sideNumber -1 ; i++) {
-            Point2D p = nextPoint(((2 * Math.PI) / sideNumber) * i);
-            this.addLinePoint(p);
+        for (int i = 0; i < this.polPoints.size() - 1; i++) {
+            this.addLinePoint(this.polPoints.get(i));
         }
-        this.addEndPoint(nextPoint(((2 * Math.PI) / sideNumber) * sideNumber -1));
+        this.addEndPoint(this.polPoints.get(this.polPoints.size() - 1));
     }
 
-    private Point2D nextPoint(double arc) {// arc为弧度，在顶点处建立直角坐标系，用r和arc确定下一个点的坐标
-        return new Point2D((startPoint.getX() - this.radius * Math.sin(arc)), (startPoint.getY() + this.radius - this.radius * Math.cos(arc)));
+    private void pushPolygonPoints() {
+        Double ca = 0D;
+        Double aiv = 360 / (double) this.numberOfSides;
+        Double ata = Math.PI / 180;
+
+        for (Double k = 0D; k < this.numberOfSides; k++) {
+            Double x = Math.cos(ca * ata) * this.radius;
+            Double y = Math.sin(ca * ata) * this.radius;
+
+            this.polPoints.add(new Point2D(x + this.centerPoint.getX(), y + centerPoint.getY()));
+
+            ca += aiv;
+        }
     }
 }

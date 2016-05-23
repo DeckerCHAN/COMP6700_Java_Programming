@@ -24,5 +24,32 @@
 
 package com.decker.javaProgramming.assignment.ass2;
 
-public class Controller {
+import javafx.geometry.Point2D;
+
+import java.util.ArrayList;
+
+public class Ellipse extends ShapePath {
+
+    public Ellipse(Double sceneWith, Double sceneHeight) {
+        super();
+
+        Double step = 2 * Math.PI / 160;  // see note 1
+        Double centerX = sceneWith / 2;
+        Double centerY = sceneHeight / 2;
+        Double r = 250D;
+
+        ArrayList<Point2D> ellipsePoints = new ArrayList<>();
+
+        for (Double theta = 0D; theta < 2 * Math.PI; theta += step) {
+            Double x = centerX + r * Math.cos(theta);
+            Double y = centerY - 0.5 * r * Math.sin(theta);
+            ellipsePoints.add(new Point2D(x, y));
+        }
+
+        for (int i = 0; i < ellipsePoints.size() - 1; i++) {
+            this.addLinePoint(ellipsePoints.get(i));
+        }
+
+        this.addEndPoint(ellipsePoints.get(ellipsePoints.size() - 1));
+    }
 }
