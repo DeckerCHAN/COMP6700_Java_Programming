@@ -29,7 +29,9 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -38,6 +40,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Path;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import static java.lang.System.out;
 
@@ -69,7 +75,9 @@ public class NewShapeChanger extends Application {
 
         Menu menuFile = new Menu("File");
         MenuItem open = new MenuItem("Open");
+        open.onActionProperty().set(e -> loadFromFile());
         MenuItem save = new MenuItem("Save");
+        save.onActionProperty().set(e -> this.saveToFile());
         MenuItem quit = new MenuItem("Quit");
         quit.setOnAction(event -> Platform.exit());
 
@@ -165,5 +173,37 @@ public class NewShapeChanger extends Application {
         this.rootGroup.getChildren().clear();
         this.rootGroup.getChildren().add(this.menuBar);
         out.println("Group cleared");
+    }
+
+    private void saveToFile() {
+        if (this.rootGroup.getChildren().size() == 1) {
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Not allowed!");
+            alert.setHeaderText("There is no shape to save.");
+            alert.setContentText("Draw something before save");
+            alert.showAndWait();
+            return;
+        }
+
+        ArrayList<ExtendedPath> paths = this.rootGroup.getChildren().stream().filter(node -> node instanceof ExtendedPath).map(node -> (ExtendedPath) node).collect(Collectors.toCollection(ArrayList::new));
+
+        try {
+            Utils.serialize(paths,"serialize.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("Can not serialize object to file.");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
+
+
+    }
+
+    private void loadFromFile() {
+        this.cleanGroup();
+
     }
 }
