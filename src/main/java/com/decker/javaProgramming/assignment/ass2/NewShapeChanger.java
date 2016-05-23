@@ -26,11 +26,11 @@ package com.decker.javaProgramming.assignment.ass2;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -57,6 +57,7 @@ public class NewShapeChanger extends Application {
     private State state = State.DRAWING;
     private ExtendedPath currentPath;
     private ExtendedPath selectedPath;
+    private ExtendedPath targetPath;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -102,14 +103,20 @@ public class NewShapeChanger extends Application {
 
         Menu menuMorph = new Menu("Morph");
         MenuItem triangle = new MenuItem("Triangle");
-
+        triangle.onActionProperty().set(this::getTriangleMorphEventHandler);
         MenuItem ellipse = new MenuItem("Ellipse");
         MenuItem rectangle = new MenuItem("Rectangle");
         rectangle.onActionProperty().set(e -> {
-            this.clean();
+            this.rootGroup.getChildren().remove(this.targetPath);
             this.rootGroup.getChildren().add(new Polygon(new Point2D(this.mainScene.getWidth() / 2, this.mainScene.getHeight() / 2), 50D, 12));
+
         });
         MenuItem polygon = new MenuItem("Polygon");
+        polygon.onActionProperty().set(e -> {
+            this.rootGroup.getChildren().remove(this.targetPath);
+            this.rootGroup.getChildren().add(new Polygon(new Point2D(this.mainScene.getWidth() / 2, this.mainScene.getHeight() / 2), 50D, 12));
+
+        });
         menuMorph.getItems().addAll(triangle, ellipse, rectangle, polygon);
 
         this.menuBar.getMenus().addAll(menuFile, menuEdit, menuMorph);
@@ -124,6 +131,10 @@ public class NewShapeChanger extends Application {
         this.primaryStage.setScene(this.mainScene);
         this.primaryStage.show();
         this.primaryStage.setOnCloseRequest(e -> Platform.exit());
+
+    }
+
+    private void getTriangleMorphEventHandler(ActionEvent actionEvent) {
 
     }
 
@@ -181,11 +192,7 @@ public class NewShapeChanger extends Application {
     private void saveToFile() {
         if (this.rootGroup.getChildren().size() == 1) {
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Not allowed!");
-            alert.setHeaderText("There is no shape to save.");
-            alert.setContentText("Draw something before save");
-            alert.showAndWait();
+            Utils.popupError("Not allowed", "There is no shape to save.", "Draw something before you can save.");
             return;
         }
 
@@ -212,12 +219,7 @@ public class NewShapeChanger extends Application {
                 fileWriter.write(savingContent.toString());
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Error");
-            alert.setHeaderText("Can not save object to file.");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            Utils.popupError("Error", "Can not save object to file.", e.getMessage());
         }
 
 
@@ -252,11 +254,8 @@ public class NewShapeChanger extends Application {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Error");
-            alert.setHeaderText("Can not read object from file.");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            Utils.popupError("Error", "Can not read object from file.", e.getMessage());
+
         }
 
 
