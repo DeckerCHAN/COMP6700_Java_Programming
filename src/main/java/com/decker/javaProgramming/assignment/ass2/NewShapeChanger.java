@@ -49,8 +49,8 @@ public class NewShapeChanger extends Application {
     private Group rootGroup;
     private MenuBar menuBar;
     private State state = State.DRAWING;
-    private LinedShape currentShape;
-    private Path selectedPath;
+    private ExtendedPath currentPath;
+    private ExtendedPath selectedPath;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -82,8 +82,11 @@ public class NewShapeChanger extends Application {
         select.onActionProperty().set(event -> {
             if (this.state == State.DRAWING) {
                 this.state = State.SELECTING;
+                ((MenuItem) event.getSource()).setText("Exit Select");
             } else {
                 this.state = State.DRAWING;
+                this.selectedPath.select();
+                ((MenuItem) event.getSource()).setText("Select");
             }
         });
         menuEdit.getItems().addAll(clean, select);
@@ -95,7 +98,7 @@ public class NewShapeChanger extends Application {
         MenuItem rectangle = new MenuItem("Rectangle");
         rectangle.onActionProperty().set(e -> {
             this.cleanGroup();
-            this.rootGroup.getChildren().add(new Polygon(new Point2D(this.mainScene.getWidth() / 2, this.mainScene.getHeight() / 2), 50D, 12).getPath());
+            this.rootGroup.getChildren().add(new Polygon(new Point2D(this.mainScene.getWidth() / 2, this.mainScene.getHeight() / 2), 50D, 12));
         });
         MenuItem polygon = new MenuItem("Polygon");
         menuMorph.getItems().addAll(triangle, ellipse, rectangle, polygon);
@@ -118,8 +121,8 @@ public class NewShapeChanger extends Application {
     private void getMousePressedEventHandler(MouseEvent event) {
 
         if (this.state == State.DRAWING) {
-            this.currentShape = new CustomerShape(new Point2D(event.getX(), event.getY()));
-            Path currentPath = this.currentShape.getPath();
+            this.currentPath = new ExtendedPath(new Point2D(event.getX(), event.getY()));
+            ExtendedPath currentPath = this.currentPath;
 
             currentPath.setOnMouseEntered(e -> {
                 if (this.state == State.SELECTING) {
@@ -133,34 +136,28 @@ public class NewShapeChanger extends Application {
             });
             currentPath.setOnMouseClicked(e -> {
                 if (this.state == State.SELECTING) {
-
+                    ExtendedPath path = ((ExtendedPath) e.getSource());
+                    if (this.selectedPath != null) {
+                        this.selectedPath.select();
+                    }
+                    this.selectedPath = path;
+                    this.selectedPath.select();
                 }
             });
             this.rootGroup.getChildren().add(currentPath);
         }
     }
 
-    private void selectPath(Path path)
-    {
-        this.selectedPath.setStrokeWidth(Variables.STROKE_WIDTH);
-        this.selectedPath = path;
-        this.se
-    }
-    private void unSelectPath(Path path)
-    {
-        ((Path) e.getSource()).setStrokeWidth(Variables.SELECTED_STROKE_WIDTH);
-        selectedPath = (Path) e.getSource();
-    }
 
     private void getMouseDragEventHandler(MouseEvent event) {
         if (this.state == State.DRAWING) {
-            this.currentShape.addLinePoint(new Point2D(event.getX(), event.getY()));
+            this.currentPath.addLinePoint(new Point2D(event.getX(), event.getY()));
         }
     }
 
     private void getMouseReleasedEventHandler(MouseEvent event) {
         if (this.state == State.DRAWING) {
-            this.currentShape.addEndPoint(new Point2D(event.getX(), event.getY()));
+            this.currentPath.addEndPoint(new Point2D(event.getX(), event.getY()));
         }
     }
 

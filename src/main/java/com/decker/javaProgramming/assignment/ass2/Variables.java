@@ -25,13 +25,15 @@
 package com.decker.javaProgramming.assignment.ass2;
 
 import javafx.scene.paint.Color;
+import javafx.scene.shape.StrokeLineCap;
 
 class Variables {
     public static final double USE_OF_SCREEN_FACTOR = 0.8;
     public static final Color SHAPE_FILL_COLOR = Color.BLUE;
     public static final Color SELECTING_SHAPE_FILL_COLOR = Color.YELLOW;
-    public static final Double SELECTED_STROKE_WIDTH = 7D;
     public static final Color SHAPE_BORDER_COLOR = Color.RED;
     public static final Double STROKE_WIDTH = 3D;
+    public static final Double SELECTED_STROKE_WIDTH = 10D;
     public static final Double STROKE_DASH_OFFSET = 0.7D;
+
 }

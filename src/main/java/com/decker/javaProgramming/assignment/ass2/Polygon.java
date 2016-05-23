@@ -27,7 +27,7 @@ package com.decker.javaProgramming.assignment.ass2;
 import javafx.geometry.Point2D;
 
 
-public class Polygon extends  LinedShape {
+public class Polygon extends ExtendedPath {
 
     private Point2D startPoint;
     private Double radius;// 外接圆的半径

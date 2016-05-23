@@ -25,28 +25,25 @@
 package com.decker.javaProgramming.assignment.ass2;
 
 import javafx.geometry.Point2D;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
+import javafx.scene.shape.*;
 
 import java.util.ArrayList;
 
-public class LinedShape {
+public class ExtendedPath extends Path {
 
+    private Boolean isSelected = false;
     private ArrayList<Point2D> points;
-    private Path path;
     private Point2D initialPoint;
 
-    public LinedShape(Point2D initialPoint) {
+    public ExtendedPath(Point2D initialPoint) {
         this.initialPoint = initialPoint;
         this.points = new ArrayList<>();
         this.points.add(initialPoint);
-        this.path = new Path();
-        this.path.getElements().add(new MoveTo(initialPoint.getX(), initialPoint.getY()));
-    }
-
-    public Path getPath() {
-        return this.path;
+        this.setStrokeWidth(Variables.STROKE_WIDTH);
+        this.setStrokeDashOffset(Variables.STROKE_DASH_OFFSET);
+        this.setStroke(Variables.SHAPE_BORDER_COLOR);
+        this.setStrokeLineJoin(StrokeLineJoin.ROUND);
+        this.getElements().add(new MoveTo(initialPoint.getX(), initialPoint.getY()));
     }
 
     public Morph getMorph() {
@@ -55,12 +52,14 @@ public class LinedShape {
 
     public void addLinePoint(Point2D p) {
         this.points.add(p);
-        this.path.getElements().add(new LineTo(p.getX(), p.getY()));
+        this.getElements().add(new LineTo(p.getX(), p.getY()));
     }
 
     public void addEndPoint(Point2D endPoint) {
         this.addLinePoint(endPoint);
-        this.path.getElements().add(new LineTo(this.initialPoint.getX(), this.initialPoint.getY()));
+        this.getElements().add(new LineTo(this.initialPoint.getX(), this.initialPoint.getY()));
+        this.setStrokeWidth(Variables.STROKE_WIDTH);
+        this.setFill(Variables.SHAPE_FILL_COLOR);
     }
 
     public ArrayList<Point2D> getPoints() {
@@ -70,4 +69,24 @@ public class LinedShape {
     private void setPoints(ArrayList<Point2D> points) {
         this.points = points;
     }
+
+    public Boolean getSelected() {
+        return isSelected;
+    }
+
+    private void setSelected(Boolean selected) {
+        isSelected = selected;
+    }
+
+    public void select() {
+        if (this.getSelected()) {
+            this.setSelected(false);
+            this.setStrokeWidth(Variables.STROKE_WIDTH);
+            this.setStrokeWidth(Variables.STROKE_WIDTH);
+        } else {
+            this.setSelected(true);
+            this.setStrokeWidth(Variables.SELECTED_STROKE_WIDTH);
+        }
+    }
+
 }
