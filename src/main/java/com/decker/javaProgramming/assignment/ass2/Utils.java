@@ -39,7 +39,7 @@ class Utils {
         return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 
-    private static void normalisePaths(Path p1, Path p2, Morph m1, Morph m2) {
+    public static void normalisePaths(Path p1, Path p2, Morph m1, Morph m2) {
 
         if (p1.getElements().size() > m2.points.size()) {
             p1.setOpacity(0.5);
@@ -90,5 +90,12 @@ class Utils {
         alert.showAndWait();
     }
 
+    public static Double randomDouble(Double min, Double max) {
+        return ThreadLocalRandom.current().nextDouble(min, max);
+    }
+
+    public static Integer randomInt(Integer min, Integer max) {
+        return ThreadLocalRandom.current().nextInt(min, max);
+    }
 
 }

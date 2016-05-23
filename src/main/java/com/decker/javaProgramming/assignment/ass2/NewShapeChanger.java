@@ -34,8 +34,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Path;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
@@ -66,11 +67,11 @@ public class NewShapeChanger extends Application {
 
         this.rootGroup = new Group();
         this.mainScene = new Scene(this.rootGroup, Screen.getPrimary().getBounds().getWidth() * Variables.USE_OF_SCREEN_FACTOR,
-                Screen.getPrimary().getBounds().getHeight() * Variables.USE_OF_SCREEN_FACTOR, Color.WHEAT);
+                Screen.getPrimary().getBounds().getHeight() * Variables.USE_OF_SCREEN_FACTOR, Variables.DEFAULT_SCENE_BACKGROUND_COLOR);
 
 
         this.menuBar = new MenuBar();
-        this.menuBar.setPrefHeight(20);
+        this.menuBar.setPrefHeight(10);
         this.menuBar.setPadding(new Insets(15, 12, 15, 12));
 
 
@@ -88,17 +89,7 @@ public class NewShapeChanger extends Application {
         MenuItem clean = new MenuItem("Clean all shapes");
         clean.onActionProperty().set(event -> this.clean());
         MenuItem select = new MenuItem("Select");
-        select.onActionProperty().set(event -> {
-            if (this.state == State.DRAWING) {
-                this.state = State.SELECTING;
-                ((MenuItem) event.getSource()).setText("Exit Select");
-            } else {
-                this.state = State.DRAWING;
-                this.selectedPath.select();
-                this.selectedPath = null;
-                ((MenuItem) event.getSource()).setText("Select");
-            }
-        });
+        select.onActionProperty().set(this::getSelectionSwitchEventHandler);
         menuEdit.getItems().addAll(clean, select);
 
         Menu menuMorph = new Menu("Morph");
@@ -127,6 +118,7 @@ public class NewShapeChanger extends Application {
         this.mainScene.onMousePressedProperty().set(this::getMousePressedEventHandler);
         this.mainScene.onMouseDraggedProperty().set(this::getMouseDragEventHandler);
         this.mainScene.onMouseReleasedProperty().set(this::getMouseReleasedEventHandler);
+        this.mainScene.onKeyPressedProperty().set(this::getKeyPressedEventHandler);
 
         this.primaryStage.setScene(this.mainScene);
         this.primaryStage.show();
@@ -134,7 +126,60 @@ public class NewShapeChanger extends Application {
 
     }
 
+    private void getKeyPressedEventHandler(KeyEvent keyEvent) {
+        if (keyEvent.isControlDown()) {
+            KeyCode code = keyEvent.getCode();
+            if (code == KeyCode.Q) {
+                Platform.exit();
+                return;
+            }
+
+            if (this.state != State.SELECTING || this.selectedPath == null) {
+                Utils.popupMessage("Not allowed", "Using Morph in Selecting Mode.", "You should switch to select mode in Edit menu and select at least 1 shape. ");
+                return;
+            }
+            if (this.targetPath == null) {
+                Utils.popupMessage("Not allowed", "Using Morph in Selecting Mode.", "You should add 1 shape through Morph menu.");
+                return;
+            }
+            if (code == KeyCode.N)
+            {
+                System.out.println("Attempt to Normalise...");
+                Utils.normalisePaths(selectedPath, targetPath, selectedPath.getMorph(), targetPath.getMorph());
+            }else if (code== KeyCode.M){
+                System.out.println("Nothing to do...");
+            }
+
+
+        }}
+
+    private void getSelectionSwitchEventHandler(ActionEvent actionEvent) {
+        if (this.state == State.DRAWING) {
+            this.state = State.SELECTING;
+            this.mainScene.setFill(Variables.SELECTING_SCENE_BACKGROUND_COLOR);
+            ((MenuItem) actionEvent.getSource()).setText("Exit Select");
+        } else {
+            this.state = State.DRAWING;
+            if (this.selectedPath != null) this.selectedPath.select();
+            if (this.targetPath != null) this.rootGroup.getChildren().remove(this.targetPath);
+            this.selectedPath = null;
+            this.mainScene.setFill(Variables.DEFAULT_SCENE_BACKGROUND_COLOR);
+            ((MenuItem) actionEvent.getSource()).setText("Select");
+        }
+    }
+
     private void getTriangleMorphEventHandler(ActionEvent actionEvent) {
+        if (this.state != State.SELECTING || this.selectedPath == null) {
+            Utils.popupMessage("Not allowed", "Using Morph in Selecting Mode.", "You should switch to select mode and select at least 1 shape. ");
+            return;
+        }
+
+        if (this.targetPath != null) this.rootGroup.getChildren().remove(this.targetPath);
+
+        this.targetPath = new RandomTrianglePath(this.mainScene.getWidth(), this.mainScene.getHeight());
+
+        this.rootGroup.getChildren().add(this.targetPath);
+
 
     }
 
@@ -219,6 +264,7 @@ public class NewShapeChanger extends Application {
                 fileWriter.write(savingContent.toString());
             }
         } catch (Exception e) {
+            e.printStackTrace();
             Utils.popupError("Error", "Can not save object to file.", e.getMessage());
         }
 

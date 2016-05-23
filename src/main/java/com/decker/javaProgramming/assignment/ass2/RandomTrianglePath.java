@@ -24,18 +24,23 @@
 
 package com.decker.javaProgramming.assignment.ass2;
 
-import javafx.scene.paint.Color;
-import javafx.scene.shape.StrokeLineCap;
+import javafx.geometry.Point2D;
 
-class Variables {
-    public static final double USE_OF_SCREEN_FACTOR = 0.8;
-    public static final Color DEFAULT_SCENE_BACKGROUND_COLOR = Color.WHITE;
-    public static final Color SELECTING_SCENE_BACKGROUND_COLOR = Color.WHEAT;
-    public static final Color SHAPE_FILL_COLOR = Color.BLUE;
-    public static final Color SELECTING_SHAPE_FILL_COLOR = Color.YELLOW;
-    public static final Color SHAPE_BORDER_COLOR = Color.RED;
-    public static final Color TARGET_SHAPE_BORDER_COLOR = Color.BLACK;
-    public static final Double STROKE_WIDTH = 3D;
-    public static final Double SELECTED_STROKE_WIDTH = 10D;
+public class RandomTrianglePath extends ShapePath {
+    public RandomTrianglePath(Double sceneWith, Double sceneHeight) {
+        super();
+        Double bottomLength = sceneWith / Utils.randomInt(2, 5);
+        Double heightLength = sceneHeight / Utils.randomInt(2, 5);
 
+        Double offsiteX = Utils.randomDouble(0D, (sceneWith - bottomLength));
+        Double offsiteY = Utils.randomDouble(0D, (sceneHeight - heightLength));
+
+        Point2D top = new Point2D(offsiteX + bottomLength / 2, offsiteY);
+        Point2D leftBottom = new Point2D(offsiteX, offsiteY + heightLength);
+        Point2D rightBotton = new Point2D(offsiteX + bottomLength, offsiteY + heightLength);
+
+        this.addLinePoint(top);
+        this.addLinePoint(leftBottom);
+        this.addEndPoint(rightBotton);
+    }
 }

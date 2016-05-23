@@ -24,18 +24,18 @@
 
 package com.decker.javaProgramming.assignment.ass2;
 
+import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.StrokeLineCap;
 
-class Variables {
-    public static final double USE_OF_SCREEN_FACTOR = 0.8;
-    public static final Color DEFAULT_SCENE_BACKGROUND_COLOR = Color.WHITE;
-    public static final Color SELECTING_SCENE_BACKGROUND_COLOR = Color.WHEAT;
-    public static final Color SHAPE_FILL_COLOR = Color.BLUE;
-    public static final Color SELECTING_SHAPE_FILL_COLOR = Color.YELLOW;
-    public static final Color SHAPE_BORDER_COLOR = Color.RED;
-    public static final Color TARGET_SHAPE_BORDER_COLOR = Color.BLACK;
-    public static final Double STROKE_WIDTH = 3D;
-    public static final Double SELECTED_STROKE_WIDTH = 10D;
+public abstract class ShapePath extends ExtendedPath {
+    protected ShapePath() {
+        super();
+        this.setStroke(Variables.TARGET_SHAPE_BORDER_COLOR);
+    }
 
+    @Override
+    public void addEndPoint(Point2D endPoint) {
+        super.addEndPoint(endPoint);
+        this.setFill(Color.TRANSPARENT);
+    }
 }

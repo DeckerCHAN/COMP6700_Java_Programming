@@ -48,31 +48,40 @@ public class ExtendedPath extends Path {
 
     }
 
+    public ExtendedPath() {
+
+        this.points = new ArrayList<>();
+        this.setStrokeWidth(Variables.STROKE_WIDTH);
+
+        this.setStroke(Variables.SHAPE_BORDER_COLOR);
+
+        this.setStrokeLineJoin(StrokeLineJoin.ROUND);
+    }
+
 
     public ExtendedPath(Point2D initialPoint) {
-        this.initialPoint = initialPoint;
-        this.points = new ArrayList<>();
-        this.points.add(initialPoint);
-        this.setStrokeWidth(Variables.STROKE_WIDTH);
-        this.setStrokeDashOffset(Variables.STROKE_DASH_OFFSET);
-        this.setStroke(Variables.SHAPE_BORDER_COLOR);
-        this.setStrokeLineJoin(StrokeLineJoin.ROUND);
-        this.getElements().add(new MoveTo(initialPoint.getX(), initialPoint.getY()));
+        this();
+        this.addLinePoint(initialPoint);
     }
 
     public Morph getMorph() {
         return new Morph(this.getPoints());
     }
 
-    public void addLinePoint(Point2D p) {
-        this.points.add(p);
-        this.getElements().add(new LineTo(p.getX(), p.getY()));
+    public void addLinePoint(Point2D point) {
+        this.points.add(point);
+        if (this.initialPoint == null) {
+            this.initialPoint = point;
+            this.getElements().add(new MoveTo(point.getX(), point.getY()));
+        } else {
+            this.getElements().add(new LineTo(point.getX(), point.getY()));
+        }
     }
 
     public void addEndPoint(Point2D endPoint) {
         this.addLinePoint(endPoint);
         this.getElements().add(new LineTo(this.initialPoint.getX(), this.initialPoint.getY()));
-        this.setStrokeWidth(Variables.STROKE_WIDTH);
+
         this.setFill(Variables.SHAPE_FILL_COLOR);
     }
 
