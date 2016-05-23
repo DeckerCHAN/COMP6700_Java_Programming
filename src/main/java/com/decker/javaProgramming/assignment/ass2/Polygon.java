@@ -24,6 +24,31 @@
 
 package com.decker.javaProgramming.assignment.ass2;
 
-enum State {
-    DRAWING,SELECTING
+import javafx.geometry.Point2D;
+
+
+public class Polygon extends  LinedShape {
+
+    private Point2D startPoint;
+    private Double radius;// 外接圆的半径
+
+    public Polygon(Point2D start, Double radius, Integer numberOfSides) {
+        super(start);
+        this.startPoint = start;
+        this.radius = radius;
+        this.posOfPoint(numberOfSides);
+    }
+
+    private void posOfPoint(int sideNumber) {
+
+        for (int i = 1; i < sideNumber -1 ; i++) {
+            Point2D p = nextPoint(((2 * Math.PI) / sideNumber) * i);
+            this.addLinePoint(p);
+        }
+        this.addEndPoint(nextPoint(((2 * Math.PI) / sideNumber) * sideNumber -1));
+    }
+
+    private Point2D nextPoint(double arc) {// arc为弧度，在顶点处建立直角坐标系，用r和arc确定下一个点的坐标
+        return new Point2D((startPoint.getX() - this.radius * Math.sin(arc)), (startPoint.getY() + this.radius - this.radius * Math.cos(arc)));
+    }
 }

@@ -24,29 +24,14 @@
 
 package com.decker.javaProgramming.assignment.ass2;
 
-import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Path;
 
-public class CustomerShapeA extends LinedShape {
-    public CustomerShapeA(Point2D initialPoint) {
-        super(initialPoint);
-    }
-
-    @Override
-    public Path getPath() {
-        Path path = super.getPath();
-        path.setStrokeWidth(3);
-        path.setStrokeDashOffset(0.7);
-        path.setStroke(Color.RED);
-
-        return path;
-    }
-
-    @Override
-    public void addEndPoint(Point2D endPoint) {
-        super.addEndPoint(endPoint);
-        this.getPath().setStrokeWidth(1);
-        this.getPath().setFill(Color.BLUE);
-    }
+class Variables {
+    public static final double USE_OF_SCREEN_FACTOR = 0.8;
+    public static final Color SHAPE_FILL_COLOR = Color.BLUE;
+    public static final Color SELECTING_SHAPE_FILL_COLOR = Color.YELLOW;
+    public static final Double SELECTED_STROKE_WIDTH = 7D;
+    public static final Color SHAPE_BORDER_COLOR = Color.RED;
+    public static final Double STROKE_WIDTH = 3D;
+    public static final Double STROKE_DASH_OFFSET = 0.7D;
 }

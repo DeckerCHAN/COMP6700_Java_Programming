@@ -28,18 +28,17 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Path;
 
-public class CustomerShapeB extends LinedShape {
-
-    public CustomerShapeB(Point2D initialPoint) {
+public class CustomerShape extends LinedShape {
+    public CustomerShape(Point2D initialPoint) {
         super(initialPoint);
     }
 
     @Override
     public Path getPath() {
         Path path = super.getPath();
-        path.setStrokeWidth(3);
-        path.setStrokeDashOffset(0.7);
-        path.setStroke(Color.GREEN);
+        path.setStrokeWidth(Variables.STROKE_WIDTH);
+        path.setStrokeDashOffset(Variables.STROKE_DASH_OFFSET);
+        path.setStroke(Variables.SHAPE_BORDER_COLOR);
 
         return path;
     }
@@ -47,7 +46,7 @@ public class CustomerShapeB extends LinedShape {
     @Override
     public void addEndPoint(Point2D endPoint) {
         super.addEndPoint(endPoint);
-        this.getPath().setStrokeWidth(1);
-        this.getPath().setFill(Color.RED);
+        this.getPath().setStrokeWidth(Variables.STROKE_WIDTH);
+        this.getPath().setFill(Variables.SHAPE_FILL_COLOR);
     }
 }

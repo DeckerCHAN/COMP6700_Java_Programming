@@ -35,6 +35,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Path;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -42,15 +43,14 @@ import static java.lang.System.out;
 
 public class NewShapeChanger extends Application {
 
-    private static final double useOfScreenFactor = 0.8;
 
     private Stage primaryStage;
     private Scene mainScene;
     private Group rootGroup;
     private MenuBar menuBar;
-    private State state = State.CLEAR;
-    private LinedShape shapeA;
-    private LinedShape shapeB;
+    private State state = State.DRAWING;
+    private LinedShape currentShape;
+    private Path selectedPath;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -58,8 +58,8 @@ public class NewShapeChanger extends Application {
 
 
         this.rootGroup = new Group();
-        this.mainScene = new Scene(this.rootGroup, Screen.getPrimary().getBounds().getWidth() * useOfScreenFactor,
-                Screen.getPrimary().getBounds().getHeight() * useOfScreenFactor, Color.WHEAT);
+        this.mainScene = new Scene(this.rootGroup, Screen.getPrimary().getBounds().getWidth() * Variables.USE_OF_SCREEN_FACTOR,
+                Screen.getPrimary().getBounds().getHeight() * Variables.USE_OF_SCREEN_FACTOR, Color.WHEAT);
 
 
         this.menuBar = new MenuBar();
@@ -76,14 +76,27 @@ public class NewShapeChanger extends Application {
         menuFile.getItems().addAll(open, save, quit);
 
         Menu menuEdit = new Menu("Edit");
+        MenuItem clean = new MenuItem("Clean all shapes");
+        clean.onActionProperty().set(event -> this.cleanGroup());
         MenuItem select = new MenuItem("Select");
-        menuEdit.getItems().add(select);
+        select.onActionProperty().set(event -> {
+            if (this.state == State.DRAWING) {
+                this.state = State.SELECTING;
+            } else {
+                this.state = State.DRAWING;
+            }
+        });
+        menuEdit.getItems().addAll(clean, select);
 
         Menu menuMorph = new Menu("Morph");
         MenuItem triangle = new MenuItem("Triangle");
 
         MenuItem ellipse = new MenuItem("Ellipse");
         MenuItem rectangle = new MenuItem("Rectangle");
+        rectangle.onActionProperty().set(e -> {
+            this.cleanGroup();
+            this.rootGroup.getChildren().add(new Polygon(new Point2D(this.mainScene.getWidth() / 2, this.mainScene.getHeight() / 2), 50D, 12).getPath());
+        });
         MenuItem polygon = new MenuItem("Polygon");
         menuMorph.getItems().addAll(triangle, ellipse, rectangle, polygon);
 
@@ -103,60 +116,57 @@ public class NewShapeChanger extends Application {
     }
 
     private void getMousePressedEventHandler(MouseEvent event) {
-        switch (this.state) {
 
-            case CLEAR:
-                this.shapeA = new CustomerShapeA(new Point2D(event.getX(), event.getY()));
-                this.rootGroup.getChildren().add(this.shapeA.getPath());
-                break;
-            case ONE:
-                this.shapeB = new CustomerShapeB(new Point2D(event.getX(), event.getY()));
-                this.rootGroup.getChildren().add(this.shapeB.getPath());
-                break;
-            case BOTH:
-                this.cleanGroup();
-                this.shapeA = new CustomerShapeA(new Point2D(event.getX(), event.getY()));
-                this.rootGroup.getChildren().add(this.shapeA.getPath());
-                break;
+        if (this.state == State.DRAWING) {
+            this.currentShape = new CustomerShape(new Point2D(event.getX(), event.getY()));
+            Path currentPath = this.currentShape.getPath();
+
+            currentPath.setOnMouseEntered(e -> {
+                if (this.state == State.SELECTING) {
+                    ((Path) e.getSource()).setFill(Variables.SELECTING_SHAPE_FILL_COLOR);
+                }
+            });
+            currentPath.setOnMouseExited(e -> {
+                if (this.state == State.SELECTING) {
+                    ((Path) e.getSource()).setFill(Variables.SHAPE_FILL_COLOR);
+                }
+            });
+            currentPath.setOnMouseClicked(e -> {
+                if (this.state == State.SELECTING) {
+
+                }
+            });
+            this.rootGroup.getChildren().add(currentPath);
         }
     }
 
-    private void getMouseDragEventHandler(MouseEvent event) {
-        switch (this.state) {
+    private void selectPath(Path path)
+    {
+        this.selectedPath.setStrokeWidth(Variables.STROKE_WIDTH);
+        this.selectedPath = path;
+        this.se
+    }
+    private void unSelectPath(Path path)
+    {
+        ((Path) e.getSource()).setStrokeWidth(Variables.SELECTED_STROKE_WIDTH);
+        selectedPath = (Path) e.getSource();
+    }
 
-            case CLEAR:
-                this.shapeA.addLinePoint(new Point2D(event.getX(), event.getY()));
-                break;
-            case ONE:
-                this.shapeB.addLinePoint(new Point2D(event.getX(), event.getY()));
-                break;
-            case BOTH:
-                this.cleanGroup();
-                break;
+    private void getMouseDragEventHandler(MouseEvent event) {
+        if (this.state == State.DRAWING) {
+            this.currentShape.addLinePoint(new Point2D(event.getX(), event.getY()));
         }
     }
 
     private void getMouseReleasedEventHandler(MouseEvent event) {
-        switch (this.state) {
-
-            case CLEAR:
-                this.shapeA.addEndPoint(new Point2D(event.getX(), event.getY()));
-                state = State.ONE;
-                break;
-            case ONE:
-                this.shapeB.addEndPoint(new Point2D(event.getX(), event.getY()));
-                state = State.BOTH;
-                break;
-            case BOTH:
-                this.cleanGroup();
-                break;
+        if (this.state == State.DRAWING) {
+            this.currentShape.addEndPoint(new Point2D(event.getX(), event.getY()));
         }
     }
 
     private void cleanGroup() {
         this.rootGroup.getChildren().clear();
         this.rootGroup.getChildren().add(this.menuBar);
-        this.state = State.CLEAR;
         out.println("Group cleared");
     }
 }
