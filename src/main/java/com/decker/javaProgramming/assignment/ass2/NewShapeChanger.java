@@ -29,7 +29,6 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
@@ -38,10 +37,11 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Path;
+import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -85,7 +85,7 @@ public class NewShapeChanger extends Application {
 
         Menu menuEdit = new Menu("Edit");
         MenuItem clean = new MenuItem("Clean all shapes");
-        clean.onActionProperty().set(event -> this.cleanGroup());
+        clean.onActionProperty().set(event -> this.clean());
         MenuItem select = new MenuItem("Select");
         select.onActionProperty().set(event -> {
             if (this.state == State.DRAWING) {
@@ -94,6 +94,7 @@ public class NewShapeChanger extends Application {
             } else {
                 this.state = State.DRAWING;
                 this.selectedPath.select();
+                this.selectedPath = null;
                 ((MenuItem) event.getSource()).setText("Select");
             }
         });
@@ -105,7 +106,7 @@ public class NewShapeChanger extends Application {
         MenuItem ellipse = new MenuItem("Ellipse");
         MenuItem rectangle = new MenuItem("Rectangle");
         rectangle.onActionProperty().set(e -> {
-            this.cleanGroup();
+            this.clean();
             this.rootGroup.getChildren().add(new Polygon(new Point2D(this.mainScene.getWidth() / 2, this.mainScene.getHeight() / 2), 50D, 12));
         });
         MenuItem polygon = new MenuItem("Polygon");
@@ -169,7 +170,9 @@ public class NewShapeChanger extends Application {
         }
     }
 
-    private void cleanGroup() {
+    private void clean() {
+        this.currentPath = null;
+        this.selectedPath = null;
         this.rootGroup.getChildren().clear();
         this.rootGroup.getChildren().add(this.menuBar);
         out.println("Group cleared");
@@ -189,12 +192,30 @@ public class NewShapeChanger extends Application {
         ArrayList<ExtendedPath> paths = this.rootGroup.getChildren().stream().filter(node -> node instanceof ExtendedPath).map(node -> (ExtendedPath) node).collect(Collectors.toCollection(ArrayList::new));
 
         try {
-            Utils.serialize(paths,"serialize.txt");
-        } catch (IOException e) {
+            StringBuilder savingContent = new StringBuilder();
+            for (ExtendedPath path : paths) {
+                for (Point2D point : path.getPoints()) {
+                    savingContent.append(String.format("%f,%f|", point.getX(), point.getY()));
+                }
+                savingContent.append(System.getProperty("line.separator"));
+            }
+
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save shape");
+            fileChooser.setInitialFileName("Objects.seq");
+            File file = fileChooser.showSaveDialog(this.primaryStage);
+            if (file == null) {
+                return;
+            }
+
+            try (FileWriter fileWriter = new FileWriter(file, false)) {
+                fileWriter.write(savingContent.toString());
+            }
+        } catch (Exception e) {
             e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
-            alert.setHeaderText("Can not serialize object to file.");
+            alert.setHeaderText("Can not save object to file.");
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
@@ -203,7 +224,41 @@ public class NewShapeChanger extends Application {
     }
 
     private void loadFromFile() {
-        this.cleanGroup();
+        this.clean();
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open shape");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sequence File", "*.seq"));
+        File file = fileChooser.showOpenDialog(this.primaryStage);
+        if (file == null) {
+            return;
+        }
+        try {
+            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] pointStrings = line.split("\\|");
+                    ArrayList<Point2D> points = new ArrayList<>();
+                    for (String pointString : pointStrings) {
+                        points.add(new Point2D(Double.valueOf(pointString.split(",")[0]), Double.valueOf(pointString.split(",")[1])));
+                    }
+                    ExtendedPath path = new ExtendedPath(points);
+                    this.rootGroup.getChildren().add(path);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("Can not read object from file.");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
+
 
     }
 }

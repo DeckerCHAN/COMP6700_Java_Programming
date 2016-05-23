@@ -25,15 +25,29 @@
 package com.decker.javaProgramming.assignment.ass2;
 
 import javafx.geometry.Point2D;
-import javafx.scene.shape.*;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.StrokeLineJoin;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ExtendedPath extends Path {
 
     private Boolean isSelected = false;
     private ArrayList<Point2D> points;
     private Point2D initialPoint;
+
+    public ExtendedPath(List<? extends Point2D> points) {
+        this(points.get(0));
+        for (int index = 1; index < points.size() - 2; index++) {
+            this.addLinePoint(points.get(index));
+        }
+        this.addEndPoint(points.get(points.size() - 1));
+
+    }
+
 
     public ExtendedPath(Point2D initialPoint) {
         this.initialPoint = initialPoint;
