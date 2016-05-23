@@ -24,6 +24,8 @@
 
 package com.decker.javaProgramming.assignment.ass2;
 
+import javafx.geometry.Point2D;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,19 +56,19 @@ import static java.lang.Math.*;
 
 public class Morph {
 
-    public List<Point> points;
+    public List<Point2D> points;
 
-    public Morph(List<Point> points) {
+    public Morph(List<Point2D> points) {
 
         this.points = new ArrayList<>();
         this.points.addAll(points
                 .stream()
-                .map(p -> Point.makePoint(p.x, p.y))
+                .map(p -> new Point2D(p.getX(), p.getY()))
                 .collect(Collectors.toList())
         );
     }
 
-    public Point anchorPoint() {
+    public Point2D anchorPoint() {
         return points.get(0);
     }
 
@@ -74,14 +76,14 @@ public class Morph {
         if (points.size() < 3)
             return this;
 
-        List<Point> newPoints = new ArrayList<>();
+        List<Point2D> newPoints = new ArrayList<>();
         double mx = medX();
         double my = medY();
-        double firstX = points.get(0).x - mx;
-        double firstY = points.get(0).y - my;
+        double firstX = points.get(0).getX() - mx;
+        double firstY = points.get(0).getY() - my;
         double theta0 = /*0.5*PI*/ -atan2(firstY, firstX);
-        double secondX = points.get(1).x - mx;
-        double secondY = points.get(2).y - my;
+        double secondX = points.get(1).getX() - mx;
+        double secondY = points.get(2).getY() - my;
         int orient = (int) signum(firstX * secondY - firstY * secondX);
         int n = points.size();
         double r = radius();
@@ -89,7 +91,7 @@ public class Morph {
 
         for (int i = 0; i < n; i++) {
             theta = orient * 2 * PI * i / n - theta0;
-            newPoints.add(Point.makePoint(mx + r * cos(theta),
+            newPoints.add(new Point2D(mx + r * cos(theta),
                     my + r * sin(theta)));
         }
         //System.out.printf("Morph radius %.2f%n", r);
@@ -103,7 +105,7 @@ public class Morph {
         int sourcePoints = source.points.size();
         int excess = sourcePoints - pointLimit;
         int gap = sourcePoints / (excess + 1);
-        List<Point> filteredPoints =
+        List<Point2D> filteredPoints =
                 IntStream.range(0, source.points.size())
                         .filter(i -> (i+1) % gap != 0 || i >= gap * excess)
                         .mapToObj(source.points::get)
@@ -118,16 +120,16 @@ public class Morph {
 
     private double medX() {
         double x = 0;
-        for (Point p : points) {
-            x += p.x;
+        for (Point2D p : points) {
+            x += p.getX();
         }
         return x / points.size();
     }
 
     private double medY() {
         double y = 0;
-        for (Point p : points) {
-            y += p.y;
+        for (Point2D p : points) {
+            y += p.getY();
         }
         return y / points.size();
     }
@@ -140,16 +142,16 @@ public class Morph {
         double cy = medY();
         double dx1, dx2, dy1, dy2;
         for (int i = 0; i < points.size() - 1; i++) {
-            dx1 = points.get(i).x - cx;
-            dy1 = points.get(i).y - cy;
-            dx2 = points.get(i + 1).x - cx;
-            dy2 = points.get(i + 1).y - cy;
+            dx1 = points.get(i).getX() - cx;
+            dy1 = points.get(i).getY() - cy;
+            dx2 = points.get(i + 1).getX() - cx;
+            dy2 = points.get(i + 1).getY() - cy;
             res += 0.5 * abs(dx1 * dy2 - dx2 * dy1);
         }
-        dx1 = points.get(points.size() - 1).x - cx;
-        dy1 = points.get(points.size() - 1).y - cy;
-        dx2 = points.get(0).x - cx;
-        dy2 = points.get(0).y - cy;
+        dx1 = points.get(points.size() - 1).getX() - cx;
+        dy1 = points.get(points.size() - 1).getY() - cy;
+        dx2 = points.get(0).getX() - cx;
+        dy2 = points.get(0).getY() - cy;
         res += 0.5 * abs(dx1 * dy2 - dx2 * dy1);
 
         return res;
