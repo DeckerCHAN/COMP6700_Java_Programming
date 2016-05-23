@@ -24,12 +24,15 @@
 
 package com.decker.javaProgramming.assignment.ass2;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Alert;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.util.Duration;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -39,24 +42,49 @@ class Utils {
         return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 
-    public static void normalisePaths(Path p1, Path p2, Morph m1, Morph m2) {
+    public static void normalisePaths(ExtendedPath p1, ExtendedPath p2, Morph m1, Morph m2) {
 
         if (p1.getElements().size() > m2.points.size()) {
-            p1.setOpacity(0.5);
-            m1 = Morph.normalize(m1, m2.points.size());
-            p1.setFill(null);
-            adjustPath(p1, m1);
-        } else if (p1.getElements().size() < m2.points.size()) {
-            p2.setOpacity(0.5);
-            m2 = Morph.normalize(m2, m1.points.size());
-            p2.setFill(null);
+
+            m2 = Morph.expand(m2, m1.points.size());
+            p2.getPoints().clear();
+            p2.getPoints().addAll(m2.points);
             adjustPath(p2, m2);
-            p2.setStrokeWidth(1);
-            p2.setFill(Color.CORNSILK);
+        } else if (p1.getElements().size() < m2.points.size()) {
+
+            m1 = Morph.expand(m1, m2.points.size());
+            p1.getPoints().clear();
+            p1.getPoints().addAll(m1.points);
+            adjustPath(p1, m1);
+
         }
-        p1.setStrokeWidth(1);
-        p1.setFill(Color.CORNSILK);
-        p2.setOpacity(0.5);
+    }
+
+    public static Timeline makeTimeline(Path p1, Path p2) {
+        assert p1.getElements().size() == p2.getElements().size() : "uneven paths";
+        final Timeline timeline = new Timeline();
+        timeline.setCycleCount(1);//(Timeline.INDEFINITE);
+        timeline.setAutoReverse(false);
+        int n = p1.getElements().size();
+        KeyValue kvx, kvy;
+        KeyFrame kf;
+        MoveTo ap1, ap2;
+        LineTo pe1, pe2;
+        ap1 = (MoveTo) p1.getElements().get(0);
+        ap2 = (MoveTo) p2.getElements().get(0);
+        kvx = new KeyValue(ap1.xProperty(), ap2.getX());
+        kvy = new KeyValue(ap1.yProperty(), ap2.getY());
+        kf = new KeyFrame(Duration.millis(5000), kvx, kvy);
+        timeline.getKeyFrames().add(kf);
+        for (int i = 1; i < n; i++) {
+            pe1 = (LineTo) p1.getElements().get(i);
+            pe2 = (LineTo) p2.getElements().get(i);
+            kvx = new KeyValue(pe1.xProperty(), pe2.getX());
+            kvy = new KeyValue(pe1.yProperty(), pe2.getY());
+            kf = new KeyFrame(Duration.millis(5000), kvx, kvy);
+            timeline.getKeyFrames().add(kf);
+        }
+        return timeline;
     }
 
     public static void adjustPath(Path path, Morph morph) {
@@ -96,6 +124,15 @@ class Utils {
 
     public static Integer randomInt(Integer min, Integer max) {
         return ThreadLocalRandom.current().nextInt(min, max);
+    }
+
+    public static Double calculatePerimeter(Point2D... points) {
+        Double distance = 0D;
+        for (int i = 1; i < points.length; i++) {
+            distance += points[i].distance(points[i - 1]);
+        }
+        distance += points[points.length - 1].distance(points[0]);
+        return distance;
     }
 
 }

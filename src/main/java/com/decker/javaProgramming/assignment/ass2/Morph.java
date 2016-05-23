@@ -27,32 +27,13 @@ package com.decker.javaProgramming.assignment.ass2;
 import javafx.geometry.Point2D;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static java.lang.Math.*;
 
-/**
- * The model part of the ShapeChanger.
- * The morphing algorithm @link Morph.normalise
- * is not perfected -- for complex enough shapes
- * the results is a strongly diminished shape compared with
- * the expected one (TODO: 25/04/2016 needs fixing later)
- *
- * <p>
- * Created with IntelliJ IDEA.
- * User: abx
- * Date: 21/04/2016
- * Time: 5:46 PM
- * Created for ass2 in package shapechanger
- * @version 1.0
- * @author abx
- * @author (your name and id)
- *
- * @see ShapeChanger
- * </p>
- */
 
 public class Morph {
 
@@ -66,6 +47,54 @@ public class Morph {
                 .map(p -> new Point2D(p.getX(), p.getY()))
                 .collect(Collectors.toList())
         );
+    }
+
+    public static Morph expand(Morph source, int pointExpect) {
+
+
+        if (source.points.size() > pointExpect)
+            throw new AssertionError("Source oneMorph has more points than pointExpect");
+
+        int sourcePointNumber = source.points.size();
+
+        LinkedList<Point2D> newList = new LinkedList<>(source.points);
+
+        int pointIndex = 0;
+        for (int i = 1; i < pointExpect - sourcePointNumber +1; i++) {
+            if (pointIndex >= newList.size() - 1) {
+                pointIndex = 0;
+            }
+            Point2D newPoint = newList.get(pointIndex).midpoint(newList.get(pointIndex + 1));
+            newList.add(pointIndex + 1, newPoint);
+            pointIndex += 2;
+        }
+
+        if (newList.size() != pointExpect)
+            throw new AssertionError("New morph should equals with number of pointExpect");
+
+
+        return new Morph(newList);
+
+
+    }
+
+    public static Morph filter(Morph source, int pointLimit) {
+        if (source.points.size() < pointLimit)
+            throw new AssertionError("Source oneMorph has less points than pointLimit");
+
+        int sourcePoints = source.points.size();
+        int excess = sourcePoints - pointLimit;
+        int gap = sourcePoints / (excess + 1);
+        List<Point2D> filteredPoints =
+                IntStream.range(0, source.points.size())
+                        .filter(i -> (i + 1) % gap != 0 || i >= gap * excess)
+                        .mapToObj(source.points::get)
+                        .collect(Collectors.toList());
+
+//        System.out.printf("source %d, limit %d and normalised morph %d%n",
+//                source.points.size(), pointLimit, filteredPoints.size());
+
+        return new Morph(filteredPoints);
     }
 
     public Point2D anchorPoint() {
@@ -97,26 +126,6 @@ public class Morph {
         //System.out.printf("Morph radius %.2f%n", r);
         return new Morph(newPoints);
     }
-
-    public static Morph normalize(Morph source, int pointLimit) {
-        if (source.points.size() < pointLimit)
-            throw new AssertionError("Source oneMorph has less points than pointLimit");
-
-        int sourcePoints = source.points.size();
-        int excess = sourcePoints - pointLimit;
-        int gap = sourcePoints / (excess + 1);
-        List<Point2D> filteredPoints =
-                IntStream.range(0, source.points.size())
-                        .filter(i -> (i+1) % gap != 0 || i >= gap * excess)
-                        .mapToObj(source.points::get)
-                        .collect(Collectors.toList());
-
-//        System.out.printf("source %d, limit %d and normalised morph %d%n",
-//                source.points.size(), pointLimit, filteredPoints.size());
-
-        return new Morph(filteredPoints);
-    }
-
 
     private double medX() {
         double x = 0;
