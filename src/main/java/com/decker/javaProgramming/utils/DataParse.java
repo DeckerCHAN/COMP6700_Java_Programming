@@ -28,8 +28,8 @@ package com.decker.javaProgramming.utils;
 public class DataParse {
     public static boolean tryParseInt(String value) {
         try {
-            Integer.parseInt(value);
-            return true;
+            Integer i = Integer.parseInt(value);
+            return i != null;
         } catch (NumberFormatException e) {
             return false;
         }

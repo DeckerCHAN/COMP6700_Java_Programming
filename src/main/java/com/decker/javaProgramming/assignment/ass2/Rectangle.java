@@ -22,26 +22,25 @@
  * SOFTWARE.
  */
 
-package com.decker.javaProgramming.exam.fin.test;
+package com.decker.javaProgramming.assignment.ass2;
 
-import java.util.ArrayList;
-import java.util.stream.Stream;
+import javafx.geometry.Point2D;
 
-import static java.lang.System.out;
-
-class Test {
-
-    public static void main(String[] args) {
-
-        Stream<Integer> integers =Stream.of(1,3,5);
-
-        Integer multipleSum = integers.reduce(1,(a,b)-> a*=b);
+public class Rectangle extends ShapePath {
+    public Rectangle(ExtendedPath sourcePath) {
+        super();
 
 
-        out.println(multipleSum);
+        Point2D a = new Point2D(sourcePath.getLayoutBounds().getMinX(), sourcePath.getLayoutBounds().getMinY());
+        Point2D b = new Point2D(sourcePath.getLayoutBounds().getMinX(), sourcePath.getLayoutBounds().getMaxY());
+        Point2D c = new Point2D(sourcePath.getLayoutBounds().getMaxX(), sourcePath.getLayoutBounds().getMaxY());
+        Point2D d = new Point2D(sourcePath.getLayoutBounds().getMaxX(), sourcePath.getLayoutBounds().getMinY());
 
-        ArrayList<Integer> theList = integers.collect(ArrayList<Integer>::new, ArrayList::add, ArrayList::addAll);
+
+        this.addLinePoint(a);
+        this.addLinePoint(b);
+        this.addLinePoint(c);
+        this.addEndPoint(d);
 
     }
-
 }

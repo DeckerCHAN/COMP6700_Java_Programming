@@ -22,43 +22,10 @@
  * SOFTWARE.
  */
 
-package com.decker.javaProgramming.assignment.ass1.factories;
+package com.decker.javaProgramming.exam.fin.pre.y2015.q2;
 
-import com.decker.javaProgramming.assignment.ass1.entities.Category;
-import com.decker.javaProgramming.assignment.ass1.utls.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-
-public class CategoryFactory {
-
-
-    public Category createCategory(Path path) {
-
-        if (!path.toFile().exists()) {
-            return null;
-        }
-
-        Category category = new Category();
-        category.setPath(path);
-        ArrayList<Path> literFiles = new ArrayList<>();
-        try (DirectoryStream<Path> dirs
-                     = Files.newDirectoryStream(path, "*.txt")) {
-            for (Path entry : dirs) {
-                literFiles.add(entry);
-            }
-        } catch (IOException e) {
-            return null;
-        }
-
-
-        category.setLiteratureFiles(literFiles);
-        return category;
+public class NotLookAndSeeException extends Exception {
+    public NotLookAndSeeException(String message) {
+        super(message);
     }
-
 }

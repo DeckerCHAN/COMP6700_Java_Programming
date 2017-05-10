@@ -76,7 +76,10 @@ public final class Zipfung {
         } else if (cli.hasArgument("h")) {
             operation = new HelpOutputOperation();
         } else {
-
+            Argument arg = cli.getKeyLessArgument();
+            if (arg.getValuesCount() == 1) {
+                operation = new DirectCountWordOperation(Paths.get(arg.getValues().get(0)));
+            }
         }
 
         long startTime = System.currentTimeMillis();

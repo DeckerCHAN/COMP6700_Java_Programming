@@ -30,12 +30,32 @@ import java.util.ArrayList;
 
 public class Ellipse extends ShapePath {
 
-    public Ellipse(Double sceneWith, Double sceneHeight) {
+    public Ellipse(ExtendedPath sourcePath) {
         super();
 
+
+        Double maxDistance = 0D;
+        Point2D maxStart = Point2D.ZERO;
+        Point2D maxEnd = Point2D.ZERO;
+
+
+        for (Point2D start : sourcePath.getPoints()) {
+            for (Point2D end :
+                    sourcePath.getPoints()) {
+                if (start.distance(end) >= maxDistance) {
+                    maxDistance = start.distance(end);
+                    maxStart = start;
+                    maxEnd = end;
+                }
+            }
+        }
+
+        Point2D mid = maxStart.midpoint(maxEnd);
+
+
         Double step = 2 * Math.PI / 160;  // see note 1
-        Double centerX = sceneWith / 2;
-        Double centerY = sceneHeight / 2;
+        Double centerX = mid.getX() ;
+        Double centerY = mid.getY() ;
         Double r = 250D;
 
         ArrayList<Point2D> ellipsePoints = new ArrayList<>();

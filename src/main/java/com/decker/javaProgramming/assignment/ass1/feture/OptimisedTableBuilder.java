@@ -35,10 +35,11 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class OptimisedTableBuilder implements TableBuilder {
 
-    private HashMap<String, Long> map;
+    private Map<String, Long> map;
 
     public OptimisedTableBuilder() {
         this.map = new HashMap<>();

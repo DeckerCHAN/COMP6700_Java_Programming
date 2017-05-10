@@ -45,6 +45,7 @@ public class CommonTableBuilder implements TableBuilder {
 
         for (String word : content.split("\\s+")) {
             if (word != null && word.length() > 0) {
+
                 if (map.containsKey(word)) {
                     map.put(word, map.get(word) + 1);
                 } else {

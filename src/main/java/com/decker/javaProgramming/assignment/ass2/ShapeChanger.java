@@ -101,11 +101,7 @@ public class ShapeChanger extends Application {
         MenuItem ellipse = new MenuItem("Ellipse");
         ellipse.onActionProperty().set(this::getEllipseMorphEventHandler);
         MenuItem rectangle = new MenuItem("Rectangle");
-        rectangle.onActionProperty().set(e -> {
-            this.rootGroup.getChildren().remove(this.targetPath);
-            this.rootGroup.getChildren().add(new Polygon(new Point2D(this.mainScene.getWidth() / 2, this.mainScene.getHeight() / 2), 50D, 12));
-
-        });
+        rectangle.onActionProperty().set(this::getRecetangleMorphEventHandler);
         MenuItem polygon = new MenuItem("Polygon");
         polygon.onActionProperty().set(this::getPolygonMorphEventHandler);
         menuMorph.getItems().addAll(triangle, ellipse, rectangle, polygon);
@@ -123,6 +119,20 @@ public class ShapeChanger extends Application {
         this.primaryStage.setScene(this.mainScene);
         this.primaryStage.show();
         this.primaryStage.setOnCloseRequest(e -> Platform.exit());
+
+    }
+
+    private void getRecetangleMorphEventHandler(ActionEvent actionEvent) {
+        if (this.state != State.SELECTING || this.selectedPath == null) {
+            Utils.popupMessage("Not allowed", "Using Morph in Selecting Mode.", "You should switch to select mode and select at least 1 shape. ");
+            return;
+        }
+
+        if (this.targetPath != null) this.rootGroup.getChildren().remove(this.targetPath);
+
+        this.targetPath = new Rectangle(this.selectedPath);
+
+        this.rootGroup.getChildren().add(this.targetPath);
 
     }
 
@@ -152,7 +162,7 @@ public class ShapeChanger extends Application {
             return;
         }
 
-        this.targetPath = new Polygon(new Point2D(this.mainScene.getWidth() /3, this.mainScene.getHeight() / 3), 100D, number);
+        this.targetPath = new Polygon(new Point2D(this.mainScene.getWidth() / 3, this.mainScene.getHeight() / 3), 100D, number);
 
         this.rootGroup.getChildren().add(this.targetPath);
 
@@ -166,7 +176,7 @@ public class ShapeChanger extends Application {
 
         if (this.targetPath != null) this.rootGroup.getChildren().remove(this.targetPath);
 
-        this.targetPath = new Ellipse(this.mainScene.getWidth(), this.mainScene.getHeight());
+        this.targetPath = new Ellipse(this.selectedPath);
 
         this.rootGroup.getChildren().add(this.targetPath);
 
