@@ -119,6 +119,21 @@ public class ShapeChanger extends Application {
         this.primaryStage.setScene(this.mainScene);
         this.primaryStage.show();
         this.primaryStage.setOnCloseRequest(e -> Platform.exit());
+        Utils.popupMessage("Key been changed","In order to resove key conflict in Windows, the key been changed.","Use Ctrl instead of Meta");
+
+    }
+
+    private void getRecetangleMorphEventHandler(ActionEvent actionEvent) {
+        if (this.state != State.SELECTING || this.selectedPath == null) {
+            Utils.popupMessage("Not allowed", "Using Morph in Selecting Mode.", "You should switch to select mode and select at least 1 shape. ");
+            return;
+        }
+
+        if (this.targetPath != null) this.rootGroup.getChildren().remove(this.targetPath);
+
+        this.targetPath = new Rectangle(this.selectedPath);
+
+        this.rootGroup.getChildren().add(this.targetPath);
 
     }
 
