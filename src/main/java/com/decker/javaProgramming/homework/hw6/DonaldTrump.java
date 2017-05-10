@@ -22,9 +22,9 @@ public class DonaldTrump {
              .filter(b -> b.colour == Ball.Colour.RED)
              .map(Brick::new)
              .limit(numberOfBricks) // try remove apriori limit, Task 3
-             .reduce(new Wall(width, height), // replace reduce with collect, Task 3
-                (wall, brick) -> {wall.lay(brick); return wall;},
-                Wall::linkTwoWalls);
+             .collect(new Wall(width, height), // replace reduce with collect, Task 3
+                Wall::accept,
+                Wall::combine);
         System.out.println(trumpWall);
     }    
 }
